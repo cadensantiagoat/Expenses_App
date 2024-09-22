@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { createClient } from '@supabase/supabase-js';
 import {
   ClerkProvider,
   SignedOut,
@@ -6,9 +7,11 @@ import {
   SignInButton,
   UserButton,
 } from '@clerk/nextjs';
+import Link from 'next/link';
 import localFont from 'next/font/local';
 import './globals.css';
 
+// Learn what these font functions do and determine if we need to keep them.
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -19,6 +22,13 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
+// -------
+
+// Added the parameters below to use Supabase client libraries.
+const supabaseUrl = 'https://ypnkyijseyxxsorzkphd.supabase.co';
+const supabaseKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlwbmt5aWpzZXl4eHNvcnprcGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwMjYyNzYsImV4cCI6MjA0MjYwMjI3Nn0.rnJyEEsi2qbgNzzgBKI9NpsIrh_DZsHBj6MFJ5uoIvk';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -35,9 +45,10 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <header className="border-b-2 border-slate-50 flex justify-between p-6">
-            <div>
+            <Link href="/">
               <span className="text-slate-600">(logo)</span>
-            </div>
+            </Link>
+
             <SignedOut>
               <SignInButton />
             </SignedOut>
