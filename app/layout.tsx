@@ -45,7 +45,8 @@ export default function RootLayout({
               <UserButton />
             </SignedIn>
           </header>
-          <main>{children}</main>
+          {/* TEMPORARY: setting height here to prevent scroll */}
+          <main className="h-[calc(100vh-74px)]">{children}</main>
         </body>
       </html>
     </ClerkProvider>
