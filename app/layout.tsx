@@ -8,23 +8,10 @@ import {
   UserButton,
 } from '@clerk/nextjs';
 import Link from 'next/link';
-import localFont from 'next/font/local';
+import { satoshi } from './fonts/fonts';
 import './globals.css';
 
-// Learn what these font functions do and determine if we need to keep them.
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
-// -------
-
-// Added the parameters below to use Supabase client libraries.
+// Added the parameters below to use Supabase client libraries. (possibly abstract this)
 const supabaseUrl = 'https://ypnkyijseyxxsorzkphd.supabase.co';
 const supabaseKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlwbmt5aWpzZXl4eHNvcnprcGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwMjYyNzYsImV4cCI6MjA0MjYwMjI3Nn0.rnJyEEsi2qbgNzzgBKI9NpsIrh_DZsHBj6MFJ5uoIvk';
@@ -43,12 +30,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${satoshi.variable} font-sans`}>
           <header className="border-b-2 border-slate-50 flex justify-between p-6">
             <Link href="/">
-              <span className="text-slate-600">(logo)</span>
+              <span className={`text-slate-600 thin-text`}>(logo)</span>
             </Link>
-
+            {/* Talk to team about desired Header component and usage */}
             <SignedOut>
               <SignInButton />
             </SignedOut>

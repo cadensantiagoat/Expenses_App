@@ -17,11 +17,21 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Temporary: probably unnecessary. Figure out best solution for font usage. */
+  .bold {
+    font-weight: 700;
+    font-family: var(--font-satoshi);
+  }
+  .thin-text {
+    font-weight: 300;
+    font-family: var(--font-satoshi);
   }
 }
