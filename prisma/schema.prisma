@@ -30,9 +30,10 @@ model Transaction {
   userId String
   user   User   @relation(fields: [userId], references: [id]) 
   
+  title String @db.Text
   amount Decimal @db.Money
   monthlyDueDate Int? 
-  description String @db.Text
+  description String? @db.Text
   category String?
 
   createdAt DateTime @default(now())
