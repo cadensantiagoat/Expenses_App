@@ -32,7 +32,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 // Schema for form validation (reference: https://zod.dev/?id=basic-usage)
 const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }).max(60),
+  title: z.string().min(2, { message: 'Title must be at least 2 characters.' }).max(60),
   description: z.string().max(120).optional(),
   category: z.string().optional(),
   amount: z.coerce
@@ -54,35 +54,45 @@ export function ExpenseForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      title: '',
       description: '',
-      //   category: '', Category's default value is defined in the SELECT
       amount: 0,
+  // category: '', Category's default value is defined in the SELECT
+      
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // This will be type-safe and validated.
-    console.log(values);
-    // Clear form values
+    // Do something with the form values. This will be type-safe and validated.
+    console.log('Values collected from form: ', values);
+
+    // call API method
+    // use .then() and .catch() because API returns a promise
+    createNewTransaction(values).then((res) => {
+      console.log("SUCCESS: transaction added to database.", res)
+    }).catch((error) => {
+      console.log("ERROR: ", error)
+    })
+
+    // Cleanup and possibly redirect
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+
         {/* NAME (Example of Input type='text' used inside of FORM component) */}
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your name" {...field} />
+                <Input placeholder="Enter a title" {...field} />
               </FormControl>
-              <FormDescription>Name your expense whatever you like.</FormDescription>
+              <FormDescription>Name your expense anything you like.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

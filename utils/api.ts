@@ -1,18 +1,24 @@
-const createURL = (path) => {
+const createURL = (path: String) => {
   return window.location.origin + path;
 };
 
-export const createNewTransaction = async (formData) => {
+export const createNewTransaction = async (formData: Object) => {
+  // asynchronously call the route handler, assigning it to "res"
   const res = await fetch(
-    new Request(createURL('/api/transactions'), {
+    new Request(createURL('/api/transactions'), {// Route Handler is located at path: /api/transactions/route.ts
       method: 'POST',
-      // body: formData
-      body: JSON.stringify({ formData }),
+      body: JSON.stringify(formData),
     })
   );
-
+  // "res" is of type NextResponse (https://nextjs.org/docs/app/api-reference/functions/next-response)
+  
   if (res.ok) {
-    const data = await res.json();
-    return data.data;
-  } // error handling here
+    // on success, resolve "res" by calling .json() method
+    const result = await res.json();
+    // return the result.
+    return result.data;
+  } else {
+    // on error, log error message to console
+    console.log("createNewTransaction FAILED: ", res)
+  }
 };
