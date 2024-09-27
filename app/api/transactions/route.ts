@@ -1,11 +1,22 @@
 import { getUserByClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
-// import { revalidatePath } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
-export const POST = async (req: Request) => {
+export const GET = async () => {
   const user = await getUserByClerkID();
-  const data = await req.json();
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  return NextResponse.json({ transactions });
+};
+
+export async function POST(request: Request) {
+  const user = await getUserByClerkID();
+  const data = await request.json();
 
   const transaction = await prisma.transaction.create({
     data: {
@@ -18,7 +29,7 @@ export const POST = async (req: Request) => {
     },
   });
 
-  // Use revalidatePath once displaying data.
-  // revalidatePath('/home')
+  // TO-DO: revalidatePath not working
+  revalidatePath('/expenses');
   return NextResponse.json({ data: transaction });
-};
+}
