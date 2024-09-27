@@ -15,7 +15,7 @@ import {
 type props = {
   title: string;
   description: string;
-  buttonText: string;
+  buttonText?: string;
   children: any;
   open: boolean;
   setOpen: any;
@@ -31,14 +31,44 @@ export function DialogModal({
   setOpen,
   children,
 }: props) {
-  //   const isDesktop = useMediaQuery("(min-width: 768px)")
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">{buttonText}</Button>
-      </DialogTrigger>
+      {buttonText ? (
+        <DialogTrigger asChild>
+          <Button variant="outline">{buttonText}</Button>
+        </DialogTrigger>
+      ) : null}
+
       <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+type modalProps = {
+  title: string;
+  description: string;
+  children: any;
+  open?: boolean;
+  setOpen?: any;
+};
+
+export function Modal({
+  title,
+  description,
+  open = true,
+  setOpen,
+  children,
+}: modalProps) {
+  return (
+    <Dialog open={open} modal defaultOpen onOpenChange={setOpen}>
+      <DialogContent forceMount className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

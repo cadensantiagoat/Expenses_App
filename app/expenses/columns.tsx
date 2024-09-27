@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
 
 import { deleteTransaction } from '@/utils/actions';
 
@@ -50,6 +51,7 @@ export const columns: ColumnDef<Expense>[] = [
     header: 'Due Date',
   },
   {
+    header: () => <div>Actions</div>,
     id: 'actions',
     cell: ({ row }) => {
       const expense = row.original;
@@ -66,7 +68,9 @@ export const columns: ColumnDef<Expense>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>View details</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <Link href={`/expenses/edit/${expense.id}`}>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem onClick={() => deleteTransaction(expense.id)}>
               Delete
             </DropdownMenuItem>

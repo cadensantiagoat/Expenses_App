@@ -1,8 +1,9 @@
 'use server';
 import { prisma } from '@/utils/db';
 import { getUserByClerkID } from './auth';
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 // If you need to change the UI based on something that happened in the backend,
 // you should just make an API call on the frontend. (onClick or useEffect)
@@ -21,7 +22,8 @@ import { revalidatePath } from 'next/cache';
 //     updatedAt: string
 //   };
 
-export const newTransaction = async (data) => {
+// Need to find out if this is bes method, and decide on proper error and success handling
+export const newTransaction = async (data: any) => {
   const user = await getUserByClerkID();
   const transaction = await prisma.transaction.create({
     data: {
@@ -33,8 +35,8 @@ export const newTransaction = async (data) => {
       category: data.category,
     },
   });
-
-  return NextResponse.json({ data: transaction });
+  revalidatePath('/expenses');
+  // return NextResponse.json({ data: transaction });
 };
 
 export const getTransactions = async () => {
@@ -51,22 +53,25 @@ export const getTransactions = async () => {
   }
 };
 
-export const deleteTransaction = async (id: String) => {
+export const deleteTransaction = async (id: string) => {
   await prisma.transaction.delete({ where: { id: id } });
   console.log('transaction deleted: ID: ', id);
   revalidatePath('/expenses');
 };
 
-export const updateTransaction = async (formData) => {
+export const updateTransaction = async (transactionID: string, formData: any) => {
+  const user = await getUserByClerkID();
   const transaction = await prisma.transaction.update({
-    where: { id: formData.id },
+    where: { id: transactionID },
     data: {
-      userId: formData.id,
+      userId: user.id,
       title: formData.title,
       amount: formData.amount,
-      monthlyDueDate: formData.monthlyDueDate,
+      monthlyDueDate: 1,
       description: formData.description,
       category: formData.category,
     },
   });
+  console.log('transaction UPDATED: ID: ', transaction);
+  redirect('/expenses');
 };

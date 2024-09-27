@@ -12,13 +12,11 @@ export const createNewTransaction = async (formData: Object) => {
     })
   );
   // "res" is of type NextResponse (https://nextjs.org/docs/app/api-reference/functions/next-response)
-
   if (res.ok) {
     // on success, resolve "res" by calling .json() method
     const result = await res.json();
     return result.data;
   } else {
-    // on error, log error message to console
     console.log('createNewTransaction FAILED: ', res);
   }
 };
@@ -32,7 +30,6 @@ export const getAllExpenses = async () => {
 
   if (response.ok) {
     const transactions = await response.json();
-    // console.log('GET expenses succeeded', transactions);
     return transactions;
   } else {
     console.log('GET transactions failed', response.status);

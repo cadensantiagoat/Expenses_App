@@ -1,7 +1,7 @@
 import { getUserByClerkID } from '@/utils/auth';
 import { prisma } from '@/utils/db';
 import { revalidatePath } from 'next/cache';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async () => {
   const user = await getUserByClerkID();
@@ -14,7 +14,7 @@ export const GET = async () => {
   return NextResponse.json({ transactions });
 };
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const user = await getUserByClerkID();
   const data = await request.json();
 

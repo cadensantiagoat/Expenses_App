@@ -1,7 +1,7 @@
 import { H2 } from '@/components/ui/typography';
 import { columns } from './columns';
 import { DataTable } from './data-table';
-import { ExpenseForm } from '@/components/expenses-form/ExpenseForm';
+import { CreateExpense } from '@/components/expenses-form/CreateExpense';
 import { getTransactions } from '@/utils/actions';
 
 const ExpensesPage = async () => {
@@ -9,9 +9,9 @@ const ExpensesPage = async () => {
 
   return (
     <div className="p-9">
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-3">
         <H2>Expenses</H2>
-        <ExpenseForm />
+        <CreateExpense />
       </div>
       <div>
         <DataTable columns={columns} data={data} />
