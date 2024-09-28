@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +18,7 @@ type props = {
   buttonText?: string;
   children: any;
   open: boolean;
-  setOpen: any;
+  onOpenChange: any;
 };
 
 // TO-DO: Dialog doesn't reset error state on close
@@ -28,12 +28,11 @@ export function DialogModal({
   description,
   buttonText,
   open,
-  setOpen,
+  onOpenChange,
   children,
 }: props) {
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       {buttonText ? (
         <DialogTrigger asChild>
           <Button variant="outline">{buttonText}</Button>
@@ -56,18 +55,18 @@ type modalProps = {
   description: string;
   children: any;
   open?: boolean;
-  setOpen?: any;
+  onOpenChange?: any;
 };
 
 export function Modal({
   title,
   description,
   open = true,
-  setOpen,
+  onOpenChange,
   children,
 }: modalProps) {
   return (
-    <Dialog open={open} modal defaultOpen onOpenChange={setOpen}>
+    <Dialog open={open} modal defaultOpen onOpenChange={onOpenChange}>
       <DialogContent forceMount className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

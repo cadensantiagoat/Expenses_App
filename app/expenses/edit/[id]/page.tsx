@@ -18,6 +18,8 @@ const EditPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <Modal
+        // open={open}
+        // onOpenChange={close}
         title={'Edit expense'}
         description={`Required fields are marked with an asterisk *`}
       >

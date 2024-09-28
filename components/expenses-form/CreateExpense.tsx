@@ -49,7 +49,7 @@ export const CreateExpense = () => {
       description={`Required fields are marked with an asterisk *`}
       buttonText={`+ Add expense`}
       open={open}
-      setOpen={setOpen}
+      onOpenChange={setOpen}
     >
       <ExpenseForm form={form} handleSubmit={onSubmit} />
     </DialogModal>
