@@ -13,7 +13,7 @@ import {
 
 import { formatDate, determineStatusByDate } from '@/utils/utils'
 import { useRouter } from 'next/navigation'
-import type { Expense } from '@/utils/types'
+import type { Expense } from '@/utils/schemas/Expense'
 
 export function ExpenseTable({ data, total = 0 }: any) {
   return (

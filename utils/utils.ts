@@ -17,3 +17,7 @@ export const determineStatusByDate = (date: Date) => {
   else if (isPast(dueDate)) return 'paid'
   else return 'pending'
 }
+
+export const randomNumber = (max: number) => {
+  return Math.floor(Math.random() * max)
+}

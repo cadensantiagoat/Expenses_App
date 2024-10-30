@@ -8,21 +8,20 @@ import { usePathname } from 'next/navigation'
 type Props = {
   children: React.ReactNode
   expenses: React.ReactNode
-  progress: React.ReactNode
+  summary: React.ReactNode
   modal: React.ReactNode
 }
 
-const DashboardLayout = ({ children, expenses, progress, modal }: Props) => {
+const DashboardLayout = ({ children, expenses, summary, modal }: Props) => {
   const path = usePathname() // string that returns the current route
   return (
     <Shell>
       {path === '/dashboard' ? (
-        // <div className="flex flex-col w-full h-full gap-3 p-3">
         <div className='grid h-full grid-cols-5 grid-rows-6 gap-3 p-3'>
           {modal}
-          <div className='col-span-3 row-span-2'>{progress}</div>
-          <div className='col-span-2 row-span-2'>{expenses}</div>
-          <div className='col-span-5 row-span-5'>{children}</div>
+          <div className='col-span-5'>{summary}</div>
+          {/* <div className='col-span-2 row-span-2'>{expenses}</div> */}
+          <div className='col-span-5 pt-12'>{children}</div>
         </div>
       ) : (
         <div>
