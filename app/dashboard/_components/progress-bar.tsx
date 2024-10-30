@@ -12,6 +12,7 @@ type Props = {
 const ProgressBar = ({ value, className }: Props) => {
   const [progress, setProgress] = useState(0)
 
+
   useEffect(() => {
     const timer = setTimeout(() => setProgress(value), 500)
     return () => clearTimeout(timer)

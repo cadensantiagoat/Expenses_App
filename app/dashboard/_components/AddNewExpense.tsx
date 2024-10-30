@@ -45,7 +45,10 @@ const AddNewExpense = ({ categories }: { categories: [Category] }) => {
           </Button>
         </Modal.Button>
         <Modal.Content title='Create a new expense'>
+          <div className='h-full overflow-y-scroll'>
           <ExpenseForm expense={expense} categories={categories} onSuccess={onSave} />
+          </div>
+          
         </Modal.Content>
       </Modal>
     </div>

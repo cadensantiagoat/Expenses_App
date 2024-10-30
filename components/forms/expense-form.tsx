@@ -69,7 +69,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
   }
 
   return (
-    <div className=''>
+    <div className='overflow-y-auto'>
       {message ? <Muted>{message}</Muted> : null}
 
       {/* Displays error message returned by the server action */}

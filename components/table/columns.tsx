@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { deleteTransaction } from '@/utils/actions'
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -68,7 +69,10 @@ export const columns: ColumnDef<Expense>[] = [
               <LinkButton path={`/dashboard/expenses/edit/${expense.id}`}>
                 Edit
               </LinkButton>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                console.log('deleted expense: ', expense)
+                deleteTransaction(expense.id)
+              }}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

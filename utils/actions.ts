@@ -56,7 +56,7 @@ export const getTransactions = async () => {
 export const deleteTransaction = async (id: string) => {
   await prisma.transaction.delete({ where: { id: id } });
   console.log('transaction deleted: ID: ', id);
-  revalidatePath('/expenses');
+  revalidatePath('/dashboard/expenses');
 };
 
 export const updateTransaction = async (transactionID: string, formData: any) => {
