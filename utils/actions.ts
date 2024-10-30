@@ -22,7 +22,7 @@ import { redirect } from 'next/navigation';
 //     updatedAt: string
 //   };
 
-// Need to find out if this is bes method, and decide on proper error and success handling
+// Need to find out if this is best method, and decide on proper error and success handling
 export const newTransaction = async (data: any) => {
   const user = await getUserByClerkID();
   const transaction = await prisma.transaction.create({
