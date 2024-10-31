@@ -18,7 +18,8 @@ type TextInputProps = {
   nameInSchema: string
   placeholder?: string
   description?: string
-  readOnly?: boolean
+  disabled?: boolean
+  optionalLabel?: string
 }
 
 const TextInput = ({
@@ -26,7 +27,8 @@ const TextInput = ({
   nameInSchema,
   placeholder,
   description,
-  readOnly,
+  disabled,
+  optionalLabel,
 }: TextInputProps) => {
   const form = useFormContext()
   const fieldTitleNoSpaces = fieldTitle.replaceAll(' ', '-')
@@ -37,18 +39,24 @@ const TextInput = ({
       name={nameInSchema}
       render={({ field }) => (
         <FormItem>
-          <FormLabel htmlFor={fieldTitleNoSpaces}>{fieldTitle}</FormLabel>
+          <FormLabel htmlFor={fieldTitleNoSpaces}>
+            {fieldTitle}
+            {optionalLabel && (
+              <FormLabel className='pl-2 font-normal text-primary/75'>
+                (optionalLabel)
+              </FormLabel>
+            )}
+          </FormLabel>
 
           <FormControl>
             <Input
               {...field}
-              id={fieldTitleNoSpaces}
               className='w-full max-w-xs'
-              placeholder={placeholder || fieldTitle}
-              readOnly={readOnly}
-              disabled={readOnly}
               value={field.value}
+              id={fieldTitleNoSpaces}
+              placeholder={placeholder || fieldTitle}
               onChange={(e) => field.onChange(e.target.value)}
+              disabled={disabled}
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
@@ -74,6 +82,7 @@ const TextareaInput = ({
   readOnly,
   description,
   resize = false,
+  optionalLabel,
 }: {
   // form: any
   fieldTitle: string
@@ -82,6 +91,7 @@ const TextareaInput = ({
   readOnly?: boolean
   description?: string
   resize?: boolean
+  optionalLabel?: string
 }) => {
   const form = useFormContext()
   const fieldTitleNoSpaces = fieldTitle.replaceAll(' ', '-')
@@ -92,6 +102,11 @@ const TextareaInput = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{fieldTitle}</FormLabel>
+          {optionalLabel && (
+            <FormLabel className='pl-2 font-normal text-primary/75'>
+              ({optionalLabel})
+            </FormLabel>
+          )}
           <FormControl>
             <Textarea
               {...field}

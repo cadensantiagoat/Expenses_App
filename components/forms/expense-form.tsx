@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 
 // types / server actions
 import type { Expense } from '@/utils/schemas/Expense'
+import type { Category } from '@/utils/schemas/Expense'
 import { updateOrCreateExpense } from '@/actions/expenses'
 
 // form helpers
@@ -21,11 +22,12 @@ import { CurrencyFormattedInput } from '@/components/forms/inputs/currency-input
 import { Form } from '@/components/ui/form'
 import { Muted, P, Small } from '@/components/ui/typography'
 import DatePicker from '@/components/forms/inputs/date-input'
+import Modal from '@/components/Modal'
 import { toast } from 'sonner'
 
 type Props = {
   expense: Expense
-  categories: any // CREATE TYPE DEFINITION FOR CATEGORY
+  categories: Category[] // CREATE TYPE DEFINITION FOR CATEGORY
   onSuccess?: (result: any) => void
 }
 
@@ -69,7 +71,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
   }
 
   return (
-    <div className='overflow-y-auto'>
+    <div className='p-4'>
       {message ? <Muted>{message}</Muted> : null}
 
       {/* Displays error message returned by the server action */}
@@ -92,18 +94,20 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
           <TextInput
             fieldTitle='Title'
             nameInSchema='title'
-            readOnly={form.formState.isLoading}
+            disabled={form.formState.isLoading}
           />
 
           <TextareaInput
             fieldTitle='Description'
             nameInSchema='description'
             readOnly={form.formState.isLoading}
+            optionalLabel='optional'
           />
           <div className='max-w-xs'>
             <SelectInput
               fieldTitle='Category'
               nameInSchema='categoryName'
+              placeholder='Select category'
               selectOptions={categories}
             />
           </div>
@@ -111,14 +115,15 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
             <CurrencyFormattedInput
               nameInSchema='amount'
               fieldTitle='Amount'
-              placeholder='Please enter a number'
+              placeholder='$0.00'
             />
           </div>
           <DatePicker fieldTitle='Due Date' nameInSchema='monthlyDueDate' />
-
-          <Button type='submit' disabled={form.formState.isLoading}>
-            Submit
-          </Button>
+          <div className='pt-3 flex'>
+            <Button type='submit' className='w-full' disabled={form.formState.isLoading}>
+              Save
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

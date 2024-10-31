@@ -60,6 +60,7 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
     message = 'Created expense.'
   }
   revalidatePath('/dashboard')
+  revalidatePath('/dashboard/expenses')
   return { message, response }
 }
 

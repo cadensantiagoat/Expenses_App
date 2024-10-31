@@ -20,6 +20,7 @@ model User {
   clerkId      String        @unique
   email        String        @unique
   name         String?
+
   transactions Transaction[] // A user can have many transactions
   categories   Category[] // A user can have many categories
 
@@ -28,18 +29,18 @@ model User {
 }
 
 model Transaction {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  title          String   @db.Text
-  amount         Decimal  @db.Money
+  id String @id @default(uuid())
+  title          String    @db.Text
+  amount         Decimal   @db.Money
   autopayEnabled Boolean?
   monthlyDueDate DateTime?
-  description    String?  @db.Text
+  description    String?   @db.Text
 
-  category     Category? @relation(fields: [categoryName], references: [id]) // a Transaction can have one category
+  userId String 
+  user   User   @relation(fields: [userId], references: [id])
+
   categoryName String?
+  category     Category? @relation(fields: [categoryName], references: [name]) // a Transaction can have one category
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -53,8 +54,9 @@ model Category {
   name         String        @unique @db.Text // might need to remove 'unique' constraint and handle one user having duplicate categories somewhere else.
   transactions Transaction[] // A Category can have many transactions
   user         User          @relation(fields: [userId], references: [id]) // A category can have one user
-  userId       String
+  userId       String        
   color        String?
   icon         String?
+
   @@index([userId])
 }

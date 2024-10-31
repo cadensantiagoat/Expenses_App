@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import type { Expense } from '@/utils/schemas/Expense'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { formatDate, determineStatusByDate } from '@/utils/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +28,12 @@ export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: 'monthlyDueDate',
     header: 'Due',
+    cell: ({ row }) => formatDate(row.getValue('monthlyDueDate')),
   },
   {
-    accessorKey: 'autopayEnabled',
-    header: 'Autopay',
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => determineStatusByDate(row.getValue('monthlyDueDate')),
   },
   {
     accessorKey: 'amount',
@@ -69,10 +72,13 @@ export const columns: ColumnDef<Expense>[] = [
               <LinkButton path={`/dashboard/expenses/edit/${expense.id}`}>
                 Edit
               </LinkButton>
-              <DropdownMenuItem onClick={() => {
-                console.log('deleted expense: ', expense)
-                deleteTransaction(expense.id)
-              }}>Delete</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  deleteTransaction(expense.id)
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -1,5 +1,5 @@
 import { getOneExpense } from '@/actions/expenses'
-import { getCategoriesByUser } from '@/actions/categories'
+import { getCategories } from '@/actions/categories'
 import { getCurrentUser } from '@/utils/auth'
 import { H3 } from '@/components/ui/typography'
 import { ModalWithConfirmation } from '@/components/Dialog'
@@ -12,7 +12,7 @@ type Props = {
 const ExpenseDetailPage = async ({ params: { id } }: Props) => {
   const user = await getCurrentUser()
   const expense = await getOneExpense(user.id, id)
-  const categoryData = await getCategoriesByUser()
+  const categories = await getCategories(user.id)
 
   if (!expense?.id) {
     return (
@@ -26,7 +26,7 @@ const ExpenseDetailPage = async ({ params: { id } }: Props) => {
 
   return (
     <ModalWithConfirmation title={`Edit ${expense.title}`}>
-      <ExpenseForm expense={expense} categories={categoryData?.categories} />
+      <ExpenseForm expense={expense} categories={categories} />
     </ModalWithConfirmation>
   )
 }
