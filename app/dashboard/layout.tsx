@@ -24,7 +24,7 @@ const DashboardLayout = ({ children, expenses, summary, modal }: Props) => {
           <div className='col-span-5 row-start-3'>{children}</div>
         </div>
       ) : (
-        <div>
+        <div className='h-[calc(100%-80px)] p-2'>
           {modal}
           {children}
         </div>

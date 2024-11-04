@@ -2,29 +2,36 @@ import { getAllExpenses } from '@/actions/expenses'
 import { getCurrentUser } from '@/utils/auth'
 import { H3 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
-import { DataTable } from '@/components/table/data-table'
-import { columns } from '@/components/table/columns'
+import { DataTable } from '@/components/table-data/data-table'
+import { columns } from '@/components/table-data/columns'
 import { PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
+import { getCategories } from '@/actions/categories'
+import CreateCategory from '../_components/CreateCategory'
+import { Card, CardContent } from '@/components/ui/card'
 
 const ExpensesPage = async () => {
   const user = await getCurrentUser()
   const expenses = await getAllExpenses(user.id)
+  const categories = await getCategories(user.id)
 
   return (
-    <div className='p-3'>
-      <div className='flex justify-between items-center pb-3'>
-        <H3>Expenses</H3>
-        <Link href={`/dashboard/expenses/add`}>
-          <Button variant={'outline'}>
-            <PlusIcon />
-            Add expense
-          </Button>
-        </Link>
-      </div>
+    <div className='w-full h-full flex flex-col gap-3'>
 
-      <div className='container mx-auto py-6'>
-        <DataTable columns={columns} data={expenses} />
+      <Card className='p-3 shadow-none h-full max-h-[270px]'>
+          <div className='flex gap-2 items-center'>
+            <Link href={`/dashboard/expenses/add`}>
+              <Button variant={'outline'}>
+                <PlusIcon />
+                Add expense
+              </Button>
+            </Link>
+            <CreateCategory />
+          </div>
+      </Card>
+
+      <div className=''>
+        <DataTable columns={columns} data={expenses} categories={categories} />
       </div>
     </div>
   )

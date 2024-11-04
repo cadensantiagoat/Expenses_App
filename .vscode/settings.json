@@ -1,7 +1,35 @@
 {
-  "workbench.colorTheme": "Material Theme Deepforest",
-  "workbench.preferredDarkColorTheme": "Material Theme Deepforest",
+  "explorer.compactFolders": false,
+  "editor.suggestSelection": "first",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "editor.guides.indentation": false,
+  "prettier.singleQuote": true,
+  "prettier.printWidth": 90,
+  "prettier.jsxSingleQuote": true,
+  "prettier.semi": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "explorer.confirmDelete": false,
+  "[csharp]": {
+    "editor.maxTokenizationLineLength": 2500,
+    "editor.inlineSuggest.suppressSuggestions": false
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.preferredDarkColorTheme": "Ayu Mirage",
   "workbench.preferredHighContrastColorTheme": "Material Theme DeepForest High Contrast",
   "workbench.preferredHighContrastLightColorTheme": "Material Theme Lighter High Contrast",
-  "workbench.iconTheme": "eq-material-theme-icons-deepforest"
+  "workbench.iconTheme": "eq-material-theme-icons-palenight",
+  "window.autoDetectColorScheme": true,
+  "materialTheme.accent": "Breaking Bad"
 }

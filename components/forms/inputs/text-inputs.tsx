@@ -8,8 +8,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { cn } from '@/utils/utils'
+import * as Popover from '@radix-ui/react-popover'
+import { ColorWheelIcon } from '@radix-ui/react-icons'
 
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { Textarea } from '../../ui/textarea'
 import { useFormContext } from 'react-hook-form'
 
@@ -20,6 +24,7 @@ type TextInputProps = {
   description?: string
   disabled?: boolean
   optionalLabel?: string
+  className?: string
 }
 
 const TextInput = ({
@@ -29,6 +34,7 @@ const TextInput = ({
   description,
   disabled,
   optionalLabel,
+  className,
 }: TextInputProps) => {
   const form = useFormContext()
   const fieldTitleNoSpaces = fieldTitle.replaceAll(' ', '-')
@@ -51,7 +57,7 @@ const TextInput = ({
           <FormControl>
             <Input
               {...field}
-              className='w-full max-w-xs'
+              className={cn('w-full', className)}
               value={field.value}
               id={fieldTitleNoSpaces}
               placeholder={placeholder || fieldTitle}
@@ -73,6 +79,8 @@ type TextAreaProps = {
   placeholder?: string
   description?: string
   readOnly?: boolean
+  resize?: boolean
+  optionalLabel?: string
 }
 
 const TextareaInput = ({
@@ -83,16 +91,7 @@ const TextareaInput = ({
   description,
   resize = false,
   optionalLabel,
-}: {
-  // form: any
-  fieldTitle: string
-  nameInSchema: string
-  placeholder?: string
-  readOnly?: boolean
-  description?: string
-  resize?: boolean
-  optionalLabel?: string
-}) => {
+}: TextAreaProps) => {
   const form = useFormContext()
   const fieldTitleNoSpaces = fieldTitle.replaceAll(' ', '-')
   return (
@@ -118,6 +117,54 @@ const TextareaInput = ({
               value={field.value}
               onChange={(e) => field.onChange(e.target.value)}
             />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
+
+type ColorProps = {
+  fieldTitle: string
+  nameInSchema: string
+  placeholder?: string
+  description?: string
+  readOnly?: boolean
+  optionalLabel?: string
+  showColors: boolean
+  setShowColors: () => void
+}
+
+const ColorInput = ({
+  fieldTitle,
+  nameInSchema,
+  placeholder,
+  readOnly,
+  description,
+  optionalLabel,
+  showColors,
+  setShowColors,
+}: ColorProps) => {
+  const form = useFormContext()
+  const fieldTitleNoSpaces = fieldTitle.replaceAll(' ', '-')
+  return (
+    <FormField
+      control={form.control}
+      name={nameInSchema}
+      render={({ field }) => (
+        <FormItem className='flex flex-col'>
+          <FormLabel>{fieldTitle}</FormLabel>
+          {optionalLabel && (
+            <FormLabel className='pl-2 font-normal text-primary/75'>
+              ({optionalLabel})
+            </FormLabel>
+          )}
+          <FormControl>
+            <div className='max-w-xs'>
+              {/* <ColorPicker open={showColors} onOpenChange={setShowColors} /> */}
+            </div>
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

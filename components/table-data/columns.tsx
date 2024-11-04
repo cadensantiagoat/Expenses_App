@@ -1,11 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { ColumnDef } from '@tanstack/react-table'
-import type { Expense } from '@/utils/schemas/Expense'
-import { MoreHorizontal } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { formatDate, determineStatusByDate } from '@/utils/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,30 +8,59 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
+import { ColumnDef } from '@tanstack/react-table'
+import type { Expense } from '@/utils/schemas/Expense'
+import { MoreHorizontal } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { formatDate, determineStatusByDate } from '@/utils/utils'
 import { deleteTransaction } from '@/utils/actions'
+import { ColumnHeader } from './column-header'
+import {Chip} from '@/components/ui/chip'
+
+/*
+  need to access all categories and their icons and colors for display in table / chip
+  solution: storing user's categories in object with each key being the categoryName
+  example:
+  {
+    'Personal': { color: '#fff', icon: Angry },
+    'Transportation': { color: '#fff', icon: Fuel },
+  }
+
+  OR (much better, simpler solution):
+    query a user's expenses and categories together and pass category object
+    to the entire row 
+
+*/
 
 export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: 'title',
-    header: 'Title',
+    header: ({ column }) => <ColumnHeader title='Title' column={column} />,
   },
   {
     accessorKey: 'categoryName',
-    header: 'Category',
+    header: ({ column }) => <ColumnHeader title='Category' column={column} />,
+    filterFn: 'arrIncludesSome',
+    cell: ({ row }) => {
+      return (
+        <Chip title={row.getValue('categoryName')} iconName={'House'}/>
+      )
+    }
   },
   {
     accessorKey: 'monthlyDueDate',
-    header: 'Due',
+    header: ({ column }) => <ColumnHeader title='Due' column={column} />,
     cell: ({ row }) => formatDate(row.getValue('monthlyDueDate')),
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => <ColumnHeader title='Status' column={column} />,
     cell: ({ row }) => determineStatusByDate(row.getValue('monthlyDueDate')),
   },
   {
     accessorKey: 'amount',
-    header: () => <div className='text-right'>Amount</div>,
+    header: ({ column }) => <ColumnHeader title='Amount' column={column} align='right' />,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue('amount'))
       const formatted = new Intl.NumberFormat('en-US', {
@@ -49,7 +72,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     accessorKey: 'id',
-    header: () => <div className='text-center'>Action</div>,
+    header: () => null,
     cell: ({ row }) => {
       const expense = row.original // access expense data using row.original
 

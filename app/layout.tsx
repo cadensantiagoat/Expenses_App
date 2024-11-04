@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { ClerkProvider } from '@clerk/nextjs'
+import { Providers } from './providers'
 import { Toaster } from '@/components/ui/sonner'
 import { satoshi } from './fonts/fonts'
+
 import './globals.css'
 
 // Added the parameters below to use Supabase client libraries. (possibly abstract this)
@@ -24,17 +26,15 @@ Readonly<{
   // modal: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
-      <html lang='en'>
-        <body className={`${satoshi.variable} font-sans`}>
-          {/* Determine if <main> tag is necessary */}
-          <main className='h-[calc(100vh-74px)]'>
-            {/* {modal} */}
-            {children}
-          </main>
+    // <ClerkProvider>
+    <html lang='en'>
+      <body className={`${satoshi.variable} font-sans`}>
+        <Providers>
+          {children}
           <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+        </Providers>
+      </body>
+    </html>
+    // </ClerkProvider>
   )
 }

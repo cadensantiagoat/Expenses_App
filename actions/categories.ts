@@ -6,6 +6,43 @@ import { delay } from '@/utils/delay'
 import { memoize } from 'nextjs-better-unstable-cache'
 import { revalidatePath } from 'next/cache'
 import { getCurrentUser } from '@/utils/auth'
+import { CategorySchema, type Category } from '@/utils/schemas/Category'
+
+type ReturnType = {
+  message: string
+  errors?: Record<string, unknown>
+  response?: Category
+}
+
+export const upsertCategory = async (category: Category): Promise<ReturnType> => {
+  const parsed = CategorySchema.safeParse(category)
+
+  if (!parsed.success) {
+    return {
+      message: 'Submission failed.',
+      errors: parsed.error.flatten().fieldErrors,
+    }
+  }
+
+  const user = await getCurrentUser()
+  let message
+  let response
+
+  // CREATE
+  if (!category.id) {
+    response = await prisma.category.create({
+      data: {
+        userId: user.id,
+        name: category.name,
+        color: category.color,
+        icon: category.icon,
+      },
+    })
+    message = 'Category created.'
+  }
+
+  return { message, response }
+}
 
 /* ------ CREATE ------ */
 export const createCategory = async (name: string) => {
