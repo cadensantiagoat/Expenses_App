@@ -1,6 +1,5 @@
 import { getAllExpenses } from '@/actions/expenses'
 import { getCurrentUser } from '@/utils/auth'
-import { H3 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/table-data/data-table'
 import { columns } from '@/components/table-data/columns'
@@ -8,7 +7,7 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import Link from 'next/link'
 import { getCategories } from '@/actions/categories'
 import CreateCategory from '../_components/CreateCategory'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 
 const ExpensesPage = async () => {
   const user = await getCurrentUser()

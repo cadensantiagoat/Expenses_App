@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 // types / server actions
 import type { Expense } from '@/utils/schemas/Expense'
-import type { Category } from '@/utils/schemas/Expense'
+import type { Category } from '@/utils/schemas/Category'
 import { updateOrCreateExpense } from '@/actions/expenses'
 
 // form helpers
@@ -25,9 +25,13 @@ import DatePicker from '@/components/forms/inputs/date-input'
 import Modal from '@/components/Modal'
 import { toast } from 'sonner'
 
+/*
+  TO-DO: Can't see/click Submit button on smaller screens when calendar is visible.
+*/
+
 type Props = {
   expense: Expense
-  categories: Category[] // CREATE TYPE DEFINITION FOR CATEGORY
+  categories: Category[]
   onSuccess?: (result: any) => void
 }
 
