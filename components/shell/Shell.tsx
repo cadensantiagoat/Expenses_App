@@ -1,34 +1,36 @@
 import TopNav from './app-topnav'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from './app-sidebar'
-import { CircleDollarSign, HouseIcon } from 'lucide-react'
+import Icon from '../Icon'
 
-const iconStyle = ''
 
 const navLinks = [
   {
     title: 'Home',
     url: '/dashboard',
-    icon: <HouseIcon className={iconStyle} />
+    icon: <Icon name='House' />
   },
   {
     title: 'Expenses',
     url: '/dashboard/expenses',
+    icon: <Icon name='HandCoins' />
   },
   {
     title: 'Categories',
     url: '/dashboard/expenses/categories/add',
+    icon: <Icon name='Layers' />
   },
 ]
 
 const Shell = ({ children }: { children: React.ReactNode }) => {
+  
   return (
     <SidebarProvider>
       <aside>
         <AppSidebar navLinks={navLinks} />
       </aside>
 
-      <main className='w-full'>
+      <main className='h-screen w-full p-2'>
         <TopNav navLinks={navLinks} />
         {children}
       </main>

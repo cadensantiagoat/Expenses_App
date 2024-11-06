@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { CircleDollarSign, HouseIcon } from 'lucide-react'
+import { CircleDollarSign } from 'lucide-react'
 import { H4 } from '../ui/typography'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -34,7 +34,7 @@ export function AppSidebar({ navLinks, ...props }: SidebarProps) {
   const activeClass = 'bg-sidebar-primary text-white border rounded-md'
 
   return (
-    <Sidebar variant='floating' {...props}>
+    <Sidebar variant='floating' {...props} className='pr-0'>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

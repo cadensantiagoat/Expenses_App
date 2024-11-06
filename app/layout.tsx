@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
-import { ClerkProvider } from '@clerk/nextjs'
 import { Providers } from './providers'
 import { Toaster } from '@/components/ui/sonner'
 import { satoshi } from './fonts/fonts'
@@ -20,13 +19,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: // modal,
-Readonly<{
+}: Readonly<{
   children: React.ReactNode
-  // modal: React.ReactNode
 }>) {
   return (
-    // <ClerkProvider>
     <html lang='en'>
       <body className={`${satoshi.variable} font-sans`}>
         <Providers>
@@ -35,6 +31,5 @@ Readonly<{
         </Providers>
       </body>
     </html>
-    // </ClerkProvider>
   )
 }

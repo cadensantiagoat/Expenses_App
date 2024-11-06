@@ -5,7 +5,7 @@ import {
 } from '@/actions/categories'
 import { getExpenseDataForDashboard } from '@/actions/expenses'
 import { randomNumber } from '@/utils/utils'
-import Summary from '../_components/Summary'
+import Summary from '../components/Summary'
 
 const SummarySlot = async () => {
   const user = await getCurrentUser()

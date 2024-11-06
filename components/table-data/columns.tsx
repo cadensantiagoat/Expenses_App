@@ -43,8 +43,9 @@ export const columns: ColumnDef<Expense>[] = [
     header: ({ column }) => <ColumnHeader title='Category' column={column} />,
     filterFn: 'arrIncludesSome',
     cell: ({ row }) => {
+      const categoryData = row.original.category;
       return (
-        <Chip title={row.getValue('categoryName')} iconName={'House'}/>
+        <Chip title={categoryData.name} color={categoryData.color} iconName={categoryData.icon}/>
       )
     }
   },
@@ -52,11 +53,6 @@ export const columns: ColumnDef<Expense>[] = [
     accessorKey: 'monthlyDueDate',
     header: ({ column }) => <ColumnHeader title='Due' column={column} />,
     cell: ({ row }) => formatDate(row.getValue('monthlyDueDate')),
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => <ColumnHeader title='Status' column={column} />,
-    cell: ({ row }) => determineStatusByDate(row.getValue('monthlyDueDate')),
   },
   {
     accessorKey: 'amount',
@@ -70,6 +66,12 @@ export const columns: ColumnDef<Expense>[] = [
       return <div className='text-right'>{formatted}</div>
     },
   },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => <ColumnHeader title='Status' align='center' column={column} />,
+    cell: ({ row }) => <div className='text-center'>{determineStatusByDate(row.getValue('monthlyDueDate'))}</div>,
+  },
+
   {
     accessorKey: 'id',
     header: () => null,
@@ -117,9 +119,9 @@ type LinkButtonProps = {
 
 const LinkButton = ({ path, children }: LinkButtonProps) => {
   const router = useRouter()
-  const handleClick = () => {
-    router.push(path)
+  const handleClick = (event) => {
+    event.stopPropagation()
+    router.push(path) 
   }
-
   return <DropdownMenuItem onClick={handleClick}>{children}</DropdownMenuItem>
 }

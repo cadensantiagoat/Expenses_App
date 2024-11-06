@@ -14,21 +14,23 @@ type Props = {
 
 const DashboardLayout = ({ children, expenses, summary, modal }: Props) => {
   const path = usePathname() // string that returns the current route
+
   return (
     <Shell>
-      {path === '/dashboard' ? (
-        <div className='grid h-full grid-cols-5 grid-rows-6 gap-3 p-3'>
-          {modal}
-          <div className='col-span-5'>{summary}</div>
-          {/* <div className='col-span-2 row-span-2'>{expenses}</div> */}
-          <div className='col-span-5 row-start-3'>{children}</div>
-        </div>
-      ) : (
-        <div className='h-[calc(100%-80px)] p-2'>
-          {modal}
-          {children}
-        </div>
-      )}
+      <div className={`h-[calc(100%-64px)] pt-2 grid grid-cols-5 grid-rows-8 gap-3 overflow-auto`}>
+        {path === '/dashboard' ? (
+          <>
+            {modal}
+            <div className='col-span-5'>{summary}</div>
+            <div className='col-span-5 row-start-3'>{children}</div>
+          </>
+        ) : (
+          <>
+            {modal}
+            {children}
+          </>
+        )}
+      </div>
     </Shell>
   )
 }

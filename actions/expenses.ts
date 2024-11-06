@@ -64,14 +64,6 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
   return { message, response }
 }
 
-type formValues = {
-  title: string
-  amount: number
-  monthlyDueDate: Date
-  description?: string
-  categoryName?: string
-}
-
 // Gets and returns an ordered list of transactions by userId
 export const getAllExpenses = memoize(
   async (userId: string) => {
@@ -80,6 +72,7 @@ export const getAllExpenses = memoize(
 
     const data = await prisma.transaction.findMany({
       where: { userId: userId },
+      include: {category: true },
       orderBy: [{ monthlyDueDate: 'desc' }],
     })
 

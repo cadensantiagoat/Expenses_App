@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatDate = (date: Date) => {
-  return format(new Date(date), 'iii, MMM do')
+  return format(new Date(date), 'do')
 }
 
 export const determineStatusByDate = (date: Date) => {

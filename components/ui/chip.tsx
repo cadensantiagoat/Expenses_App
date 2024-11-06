@@ -1,42 +1,50 @@
 import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/utils/utils'
+import { pSBC } from '@/utils/color-converter'
 import Icon from '@/components/Icon'
 
-const chipVariants = cva(
-  'inline-flex items-center rounded-2xl border px-2.5 py-1 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-  {
-    variants: {
-      variant: {
-        default:
-          'bg-primary-foreground text-primary hover:bg-primary-foreground/80',
-        color:
-          'border-transparent',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-)
-
-
-export interface ChipProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof chipVariants> {
-        iconName?: string           
-        title: string,
-        color?: string
-    }
-
-const Chip = ({ className, variant, iconName, color, title, ...props }: ChipProps) => {
-
-    // const iconColor = color ? '#0f172a' : '#f8fafc' 
-
-  return <div  className={cn(chipVariants({ variant }), className)} {...props}>
-    {iconName && (<Icon name={iconName} size={16} color={'#0f172a'} className='mr-2'/>)}
-    {title}
-  </div>
+export interface ChipProps extends React.HTMLAttributes<HTMLDivElement> {
+  iconName?: string
+  title: string
+  color?: string
 }
 
-export { Chip, chipVariants }
+const defaultChipStyles = {
+  baseClass:
+    'inline-flex items-center gap-1.5 rounded-lg text-xs border px-2.5 py-1 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  defaultClass: 'bg-primary-foreground text-primary hover:bg-primary-foreground/80',
+  iconColor: '#0f172a',
+}
+
+const Chip = ({ className, iconName, color, title, ...props }: ChipProps) => {
+  // Return chip with default styles
+  if (color === 'default') {
+    return (
+      <div
+        className={cn(defaultChipStyles.baseClass, defaultChipStyles.defaultClass)}
+        {...props}
+      >
+          <Icon name={iconName} size={15} color={defaultChipStyles.iconColor} />
+        {title}
+      </div>
+    )
+  }
+
+  // Return chip with computed colors 
+  const lighterColor = pSBC(0.75, color) // color used for background
+  const darkerColor = pSBC(-0.42, color) // color used for icon and text
+  const colorStyles = {
+    backgroundColor: lighterColor,
+    borderColor: color,
+    color: darkerColor,
+  }
+
+  return (
+    <div className={cn(defaultChipStyles.baseClass, '')} {...props} style={colorStyles}>
+      <Icon name={iconName} size={15} color={darkerColor} />
+      {title}
+    </div>
+  )
+}
+
+export { Chip }

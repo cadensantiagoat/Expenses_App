@@ -36,14 +36,11 @@ type InputProps = {
   form: any
   nameInSchema: string
   fieldTitle: string
+  handleChange: (color: any) => void
   defaultValue?: string
 }
 
-const ColorInput = ({ form, defaultValue, nameInSchema, fieldTitle }: InputProps) => {
-  const onColorChange = (color: any) => {
-    form.setValue(nameInSchema, color)
-  }
-
+const ColorInput = ({ form, defaultValue, nameInSchema, fieldTitle, handleChange }: InputProps) => {
   return (
     <div className='space-y-2'>
       <FormLabel className='pb-1'>
@@ -52,7 +49,7 @@ const ColorInput = ({ form, defaultValue, nameInSchema, fieldTitle }: InputProps
       </FormLabel>
       <ColorSelect
         name={nameInSchema}
-        handleChange={onColorChange}
+        handleChange={handleChange}
         defaultValue={defaultValue}
       />
     </div>

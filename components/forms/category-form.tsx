@@ -22,11 +22,18 @@ import { Form } from '@/components/ui/form'
 import { Chip } from '../ui/chip'
 
 /* 
-
-  TO-DO: implement this form in a modal using ModalContext
+  BEFORE IDEA: Fuly implement category form and Expense form and decide where users can access forms.
   
-  //import { ModalContext } from '@/utils/contexts/modal-context'
+  IDEA: Nest category form within expense form under 'customize category' radio button?
+  Initial category creation can be done via combobox, on 'no results found' display save / submit
+  button that creates the category and then opens customize category form with category ID and title
+  in default values and then update color and icon fields?
 
+  TO-DO:
+  - implement this form in a modal using ModalContext
+  - implement clear functionality for icon and color input.
+  - implement loading states
+  - test / implement edit category functionality
 */
  
 
@@ -91,6 +98,11 @@ const CategoryForm = memo(function CategoryForm({
     setIconValue(event)
   }
 
+  const handleColorChange = (color: string) => {
+    setColorValue(color)
+    form.setValue('color', color)
+  }
+
   /* condition to toggle preview of category chip in form. */
   const showChip =
     form.formState.touchedFields.name &&
@@ -120,13 +132,14 @@ const CategoryForm = memo(function CategoryForm({
             />
             {showChip && (
               <div>
-                <Chip title={form.getValues('name')} iconName={iconValue} />
+                <Chip title={form.getValues('name')} iconName={iconValue} color={colorValue} />
               </div>
             )}
             <ColorInput
               form={form}
               nameInSchema='color'
               fieldTitle='Color'
+              handleChange={handleColorChange}
               defaultValue={colorValue}
             />
             <IconInput

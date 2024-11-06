@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import {
   ColumnDef,
   flexRender,
-  VisibilityState,
   ColumnFiltersState,
   SortingState,
   getCoreRowModel,
@@ -23,10 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { DataTableVisibilityToggle } from './column-visibility-toggle'
 
-import { Input } from '../ui/input'
-import CategoryFilter from './category-filter'
+import { TableHeaderButtons } from './table-header'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -39,6 +37,7 @@ export function DataTable<TData, TValue>({
   data,
   categories,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter()
   /* SORTING, FILTERING, and VISIBILITY state */
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -62,24 +61,17 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  const handleRowClick = (expense) => {
+    router.push(`/dashboard/expenses/${expense.id}`)
+  }
+
   return (
-    <div>
-      <div className='flex items-center justify-between pb-3'>
-        <Input
-          placeholder='Filter expenses...'
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
-          }
-          className='max-w-[240px]'
-        />
-        <div className='flex space-x-3'>
-          <CategoryFilter categories={categories} table={table} />
-          <DataTableVisibilityToggle table={table} />
-        </div>
-      </div>
-      <div className='rounded-md border'>
-        <Table>
+    <div className='rounded-md p-3'>
+
+        <TableHeaderButtons table={table} categories={categories} />
+
+      <div className='rounded-md'>
+        <Table className='overflow-auto'>
           <TableHeader className='px-2'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -98,7 +90,12 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleRowClick(row.original)}
+                  className='cursor-pointer'
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

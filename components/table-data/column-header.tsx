@@ -19,7 +19,7 @@ interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
   title: string
-  align?: string
+  align?: string 
 }
 
 export function ColumnHeader<TData, TValue>({
@@ -33,8 +33,9 @@ export function ColumnHeader<TData, TValue>({
   }
 
   const classes = {
-    wrapper: align === 'right' ? 'justify-end' : '',
-    button: align === 'right' ? 'px-0 ' : '-ml-3',
+    wrapper:
+      align === 'right' ? 'justify-end' : align === 'center' ? 'justify-center' : '',
+    button: align === 'right' ? 'px-0 ' : align === 'center' ? 'justify-center' : '-ml-3',
   }
 
   return (

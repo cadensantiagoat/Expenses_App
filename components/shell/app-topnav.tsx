@@ -14,7 +14,8 @@ const TopNav = ({ navLinks }: Props) => {
   const path = usePathname()
 
   return (
-    <header className={`py-2 ${open ? 'pr-2' : 'px-2'}`}>
+    <header>
+    {/* <header className={`py-2 ${open ? 'pr-2' : 'px-2'}`}> */}
       <div className='h-16 flex justify-between items-center p-2 gap-2 bg-sidebar rounded-lg border border-sidebar-border'>
         <div className='flex items-center gap-2'>
           <SidebarTrigger />
