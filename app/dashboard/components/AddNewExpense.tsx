@@ -25,7 +25,6 @@ type Category = {
 }
 
 const AddNewExpense = ({ categories }: { categories: [Category] }) => {
-  // console.log(categories)
   const [open, setOpen] = useState(false)
   const router = useRouter()
 

@@ -1,8 +1,7 @@
 'use client'
 
 // react / hooks
-import { useState, useEffect, useContext, memo, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, memo } from 'react'
 
 // types / server actions
 import { CategorySchema, type Category } from '@/utils/schemas/Category'
@@ -88,7 +87,7 @@ const CategoryForm = memo(function CategoryForm({
       return
     } else {
       setMessage(result.message)
-      // onSuccess ? onSuccess(result) : router.back() // temporary workaround. Figure out desired viewing / editing pages.
+      onSuccess(result);
       form.reset(form.getValues())
     }
   }

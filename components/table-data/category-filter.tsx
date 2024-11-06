@@ -15,7 +15,7 @@ type Props = {
   table: any
 }
 
-const CategoryFilter = ({ categories, table }: Props) => {
+export const CategoryFilter = ({ categories, table }: Props) => {
   const column = table.getColumn('categoryName')
   const filters = table.getState().columnFilters
   const index = column?.getFilterIndex()
@@ -68,4 +68,3 @@ const CategoryFilter = ({ categories, table }: Props) => {
     </DropdownMenu>
   )
 }
-export default CategoryFilter

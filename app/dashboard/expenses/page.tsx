@@ -5,6 +5,8 @@ import { columns } from '@/components/table-data/columns'
 import { getCategories } from '@/actions/categories'
 import { Card } from '@/components/ui/card'
 import { H4 } from '@/components/ui/typography'
+import CategoryFormModal from '@/components/category-modal-form'
+
 
 const ExpensesPage = async () => {
   const user = await getCurrentUser()
@@ -21,6 +23,7 @@ const ExpensesPage = async () => {
 
         {/* Grid placement for Table is set in the component */}
         <DataTable columns={columns} data={expenses} categories={categories} />
+        <CategoryFormModal />
       </div>
     </div>
   )

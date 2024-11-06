@@ -10,7 +10,7 @@
   "emmet.triggerExpansionOnTab": true,
   "editor.guides.indentation": false,
   "prettier.singleQuote": true,
-  "prettier.printWidth": 90,
+  "prettier.printWidth": 99,
   "prettier.jsxSingleQuote": true,
   "prettier.semi": false,
   "editor.formatOnSave": true,
