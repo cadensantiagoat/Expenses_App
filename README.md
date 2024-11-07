@@ -2,11 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-Once you have successfully cloned the project, install the required dependencies:
+Install the required dependencies:
 
 ```
 npm install
 ```
+
+
+Synchronize the Prisma schema with the database schema:
+
+```
+npx prisma db push
+```
+
+
 
 then, run the development server:
 
