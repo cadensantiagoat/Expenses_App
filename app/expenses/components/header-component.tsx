@@ -26,7 +26,8 @@ export const Header = ({ children }: Props) => {
             It is currently controlled via routing / pathname.
   */
   const handleNewExpenseClicked = () => {
-    // setModalOpen(true)
+    openModal(ModalIds.expenseModal)
+    console.log('modal opened!')
   }
 
   return (
@@ -66,7 +67,7 @@ export const Header = ({ children }: Props) => {
             iconName='Plus'
             text='New Expense'
             size={'sm'}
-            // onClick={() => console.log('new expense')}
+            onClick={handleNewExpenseClicked}
           />
           </div>
         </div>

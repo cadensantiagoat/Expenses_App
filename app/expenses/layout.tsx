@@ -1,6 +1,9 @@
 import React from 'react'
 import Shell from '@/components/shell/Shell'
 import { Header } from './components/header-component'
+import { ExpenseFormModal } from './components/expense-form-modal'
+import {  getCategories } from '@/actions/categories'
+import { getCurrentUser } from '@/utils/auth'
 
 
 type Props = {
@@ -8,7 +11,10 @@ type Props = {
   overview: React.ReactNode
 }
 
-const ExpensesLayout = ({ children, overview }: Props) => {
+const ExpensesLayout = async ({ children, overview }: Props) => {
+  const user = await getCurrentUser()
+  const categories = await getCategories(user.id)
+
   return (
     <Shell>
       <div className='col-span-full h-full row-span-full px-3'>
@@ -23,6 +29,7 @@ const ExpensesLayout = ({ children, overview }: Props) => {
         
         {/* Renders the data-table or category-table depending on URL */}
         {children}
+        <ExpenseFormModal categories={categories} />
       </div>
     </Shell>
   )

@@ -4,8 +4,9 @@ import { getAllExpenses } from '@/actions/expenses'
 import { columns } from '@/components/table-data/columns'
 import { DataTable } from '@/components/table-data/data-table'
 import { getExpenseDataForDashboard } from '@/actions/expenses'
-import { groupExpensesByCategory, getCategoriesAndTransactions } from '@/actions/categories'
+import { groupExpensesByCategory, getCategoriesAndTransactions, getCategories } from '@/actions/categories'
 import CategoryFormModal from '@/components/category-modal-form'
+
 
 const ExpensesPage = async () => {
   const user = await getCurrentUser()
