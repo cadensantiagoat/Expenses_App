@@ -44,9 +44,9 @@ export const columns: ColumnDef<Expense>[] = [
     filterFn: 'arrIncludesSome',
     cell: ({ row }) => {
       const categoryData = row.original.category;
-      return (
+      return categoryData ? (
         <Chip title={categoryData.name} color={categoryData.color} iconName={categoryData.icon}/>
-      )
+      ) : null
     }
   },
   {
