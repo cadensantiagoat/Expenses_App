@@ -66,11 +66,11 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className='rounded-md p-3'>
+    <div className='rounded-md py-3 px-6 col-span-full border'>
 
         <TableHeaderButtons table={table} categories={categories} />
 
-      <div className='rounded-md'>
+      <div className='rounded-md border px-3'>
         <Table className='overflow-auto'>
           <TableHeader className='px-2'>
             {table.getHeaderGroups().map((headerGroup) => (

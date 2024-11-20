@@ -26,7 +26,7 @@ const DashboardLayout = ({ children, expenses, summary, modal }: Props) => {
           </>
         ) : (
           <>
-            {modal}
+            {/* {modal} */}
             {children}
           </>
         )}

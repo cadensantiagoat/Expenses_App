@@ -15,6 +15,9 @@
   "prettier.semi": false,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -29,5 +32,14 @@
   "workbench.preferredDarkColorTheme": "Ayu Mirage",
   "workbench.iconTheme": "ayu",
   "window.autoDetectColorScheme": true,
-  "materialTheme.accent": "Breaking Bad"
+  "materialTheme.accent": "Breaking Bad",
+  "editor.suggest.selectionMode": "always",
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "javascript.validate.enable": false,
+  "javascript.format.enable": false,
+  "typescript.surveys.enabled": false,
+  "workbench.settings.editor": "json"
 }

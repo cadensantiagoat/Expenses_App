@@ -1,4 +1,5 @@
 import React from 'react';
+import {cn} from '@/utils/utils'
 
 interface Props {
   className?: string;
@@ -18,7 +19,7 @@ const H1: React.FC<Props> = ({ className, children }) => {
 const H2: React.FC<Props> = ({ className, children }) => {
   return (
     <h2
-      className={`scroll-m-20 border-b pb-2 text-h2 font-bold tracking-tight first:mt-0 ${className}`}
+      className={cn(`scroll-m-20 border-b pb-2 text-h2 font-bold tracking-tight first:mt-0`, className)}
     >
       {children}
     </h2>

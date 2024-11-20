@@ -12,12 +12,12 @@ const navLinks = [
   },
   {
     title: 'Expenses',
-    url: '/dashboard/expenses',
+    url: '/expenses',
     icon: <Icon name='HandCoins' />
   },
   {
     title: 'Categories',
-    url: '/dashboard/expenses/categories/add',
+    url: '/expenses/categories',
     icon: <Icon name='Layers' />
   },
 ]

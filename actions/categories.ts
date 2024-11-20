@@ -70,7 +70,7 @@ export const createCategory = async (name: string) => {
 /* ------ READ ------ */
 export const getCategories = async (userId: string) => {
   const categories = await prisma.category.findMany({
-    where: { userId: userId },
+    where: { userId: userId }
   })
 
   if (!categories) return { message: 'get categories failed' }
@@ -85,6 +85,7 @@ export const getCategoriesAndTransactions = memoize(
       where: { userId: user.id },
       include: {
         transactions: true,
+        
       },
     })
 

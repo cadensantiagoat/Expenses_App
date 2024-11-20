@@ -41,6 +41,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "recharts": "^2.13.3",
     "sonner": "^1.5.0",
     "supabase": "^1.192.5",
     "tailwind-merge": "^2.5.2",
@@ -58,6 +59,6 @@
     "postcss": "^8",
     "prisma": "^5.19.1",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "5.6.3"
   }
 }

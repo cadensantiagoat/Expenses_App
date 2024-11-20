@@ -53,7 +53,7 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
           confirmationAction={handleConfirmAction}
           message='You have unsaved changes. Please confirm you want to exit without saving.'
         />
-        <CategoryForm category={initialCategory} onSuccess={onSuccess} />
+        <CategoryForm category={initialCategory} onSuccess={onSuccess}/>
       </Modal.Content>
     </Modal>
   )

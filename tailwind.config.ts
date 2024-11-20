@@ -60,7 +60,10 @@ const config: Config = {
     },
     extend: {
       gridTemplateRows: {
-        expensesLayout: '180px 1fr',
+        expensesLayout: '250px 1fr',
+      },
+      gridTemplateColumns: {
+        expensesGrid: 'repeat(auto-fit, minmax(420px, 1fr))'
       },
       colors: {
         background: 'hsl(var(--background))',
