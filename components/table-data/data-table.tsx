@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/table'
 
 
-import { TableHeaderButtons } from './table-header'
+import { TableFilterControls } from './table-header'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -66,18 +66,19 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className='rounded-md py-3 px-6 col-span-full border'>
+    // Table container
+    <div className='rounded-md col-span-full border p-3'>
 
-        <TableHeaderButtons table={table} categories={categories} />
+        <TableFilterControls table={table} categories={categories} />
 
-      <div className='rounded-md border px-3'>
+      <div className='table-wrapper'>
         <Table className='overflow-auto'>
-          <TableHeader className='px-2'>
+          <TableHeader className='bg-muted'>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className='rounded-lg'>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className='px-4'>
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -97,7 +98,7 @@ export function DataTable<TData, TValue>({
                   className='cursor-pointer'
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className='first:pl-4 last:pr-4'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

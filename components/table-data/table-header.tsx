@@ -2,19 +2,17 @@
 
 import { useState } from 'react'
 import { Input } from '../ui/input'
-import { H4 } from '../ui/typography'
-import { IconButton } from '../ui/button'
 import { CategoryFilter } from './category-filter'
 import { useModal, ModalIds } from '@/utils/contexts/modal-context'
 import { DataTableVisibilityToggle } from './column-visibility-toggle'
 import type { Category } from '@/utils/schemas/Category'
 
-type TableHeaderProps = {
+type Props = {
   table: Object
   categories: Category[]
 }
 
-export const TableHeaderButtons = ({ table, categories }: TableHeaderProps) => {
+export const TableFilterControls = ({ table, categories }: Props) => {
   const [showFilters, setShowFilters] = useState(true)
   const { modals, openModal, closeModal } = useModal()
 
@@ -26,17 +24,21 @@ export const TableHeaderButtons = ({ table, categories }: TableHeaderProps) => {
   }
 
   return (
-    <div className='flex items-center w-full justify-between pt-6 pb-3'>
+    <div className='flex items-center w-full justify-between gap-2 py-3'>
+      <div className="flex w-full">
       <Input
         placeholder='Search...'
         value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
         onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
         className='max-w-[240px] h-[32px]'
       />
+      </div>
+      <div className="flex gap-2">
       <CategoryFilter categories={categories} table={table} />
       <DataTableVisibilityToggle table={table} />
+      </div>
       {/* <div className='flex self-end'> */}
-      <IconButton
+      {/* <IconButton
         iconName='Plus'
         text='New Category'
         size={'sm'}
@@ -48,7 +50,7 @@ export const TableHeaderButtons = ({ table, categories }: TableHeaderProps) => {
         text='New Expense'
         size={'sm'}
         onClick={handleNewExpenseClicked}
-      />
+      /> */}
     </div>
   )
 }

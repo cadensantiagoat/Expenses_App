@@ -1,4 +1,4 @@
-import { CategoryTable } from "../../components/CollapsibleTable"
+import { CategoryTable } from "../../../expenses/components/category-table"
 import {getCategoriesAndTransactions} from '@/actions/categories'
 
 

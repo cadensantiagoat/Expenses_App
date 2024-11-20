@@ -8,7 +8,7 @@ const OverviewSlot = async () => {
     const categories = await getCategoriesAndTransactions();
     const chartData = await buildChartData(groupedExpenses, categories);
     return (
-        <div className="flex gap-3 pb-2">
+        <div className="flex gap-3">
             <ExpensesOverview/>
             <CategoryOverview chartData={chartData} categories={categories} groupedExpenses={groupedExpenses} />
         </div>

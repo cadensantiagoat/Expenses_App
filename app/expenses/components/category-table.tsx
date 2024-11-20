@@ -20,13 +20,13 @@ export const CategoryTable = ({ categories, groupedExpenses, transactions }) => 
   return (
     <div className='rounded-md w-full border'>
       <Table>
-        {/* <TableHeader>
+        <TableHeader>
           <TableRow>
             <TableHead className='w-[210px]'>Category</TableHead>
             <TableHead>Total due</TableHead>
             <TableHead className='text-center'>Progress</TableHead>
           </TableRow>
-        </TableHeader> */}
+        </TableHeader>
         <TableBody>
           {categories &&
             categories.map((category, index) => {
