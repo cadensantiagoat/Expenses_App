@@ -7,6 +7,7 @@ import { AlertConfirmation } from './AlertConfirmation'
 import type { Category } from '@/utils/schemas/Category'
 import { useModal, ModalIds } from '@/utils/contexts/modal-context'
 import CategoryForm from '@/components/forms/category-form'
+import { IS_CATEGORY_FORM_DIRTY } from '@/utils/constants'
 
 /* 
     used as initial values when CREATING a new category.
@@ -27,7 +28,7 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
   const [showExitConfirmation, setShowExitConfirmation] = useState(false)
 
   const handleOpenChange = () => {
-    const isFormModified = localStorage.getItem('category-form-modified')
+    const isFormModified = localStorage.getItem(IS_CATEGORY_FORM_DIRTY)
 
     /* Checks if 'name' field has been modified before closing the modal. */
     if (isFormModified && JSON.parse(isFormModified)) setShowExitConfirmation(true)
@@ -40,7 +41,7 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
   const onSuccess = (result: any) => {
     closeModal(ModalIds.categoryModal)
     toast(result.message, {
-      description: `Category: ${result.response.name}`
+      description: `Category: ${result.response.name}`,
     })
   }
 
@@ -53,7 +54,7 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
           confirmationAction={handleConfirmAction}
           message='You have unsaved changes. Please confirm you want to exit without saving.'
         />
-        <CategoryForm category={initialCategory} onSuccess={onSuccess}/>
+        <CategoryForm category={initialCategory} onSuccess={onSuccess} />
       </Modal.Content>
     </Modal>
   )

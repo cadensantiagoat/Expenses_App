@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { usePathname } from 'next/navigation'
@@ -37,10 +37,10 @@ export const Header = ({ children }: Props) => {
         <div className='flex justify-between items-center w-full'>
           <Muted>{format(new Date(), 'MMMM do, yyyy')}</Muted>
           <IconButton
-          iconName={showOverview ? 'ChevronUp' : 'ChevronDown'}
-          text={`${showOverview ? 'Hide' : 'Show'} data`}
-          variant={'ghost'}
-          onClick={() => setShowOverview(!showOverview)}
+            iconName={showOverview ? 'ChevronUp' : 'ChevronDown'}
+            text={`${showOverview ? 'Hide' : 'Show'} data`}
+            variant={'ghost'}
+            onClick={() => setShowOverview(!showOverview)}
           />
         </div>
       </div>
@@ -55,20 +55,20 @@ export const Header = ({ children }: Props) => {
               <TabsTrigger value='categories'>Categories</TabsTrigger>
             </Link>
           </TabsList>
-<div className="flex items-center gap-2">
-          <IconButton
-            iconName='Plus'
-            text='New Category'
-            size={'sm'}
-            variant={'outline'}
-            onClick={handleNewCategoryClicked}
-          />
-          <IconButton
-            iconName='Plus'
-            text='New Expense'
-            size={'sm'}
-            onClick={handleNewExpenseClicked}
-          />
+          <div className='flex items-center gap-2'>
+            <IconButton
+              iconName='Plus'
+              text='New Category'
+              size={'sm'}
+              variant={'outline'}
+              onClick={handleNewCategoryClicked}
+            />
+            <IconButton
+              iconName='Plus'
+              text='New Expense'
+              size={'sm'}
+              onClick={handleNewExpenseClicked}
+            />
           </div>
         </div>
       </Tabs>

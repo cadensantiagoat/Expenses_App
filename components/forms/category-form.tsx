@@ -5,6 +5,7 @@ import { useState, useEffect, memo } from 'react'
 
 // types / server actions
 import { CategorySchema, type Category } from '@/utils/schemas/Category'
+import { IS_CATEGORY_FORM_DIRTY } from '@/utils/constants'
 import { upsertCategory } from '@/actions/categories'
 
 // form helpers
@@ -12,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 // components
-import { TextInput } from '@/components/forms/inputs/text-inputs'
+import { TextInput } from '@/components/forms/inputs/inputs'
 import { Small, Muted } from '../ui/typography'
 import { ColorInput } from './inputs/color-input'
 import { IconInput } from './inputs/icon-input'
@@ -34,20 +35,15 @@ import { Chip } from '../ui/chip'
   - implement loading states
   - test / implement edit category functionality
 */
- 
 
 type Props = {
   category: Category
   categories?: Category[]
-  onSuccess?: (result: any) => void
+  onSuccess: (result: any) => void
 }
 
 // evaluate use of 'memo' here
-const CategoryForm = memo(function CategoryForm({
-  category,
-  categories,
-  onSuccess,
-}: Props) {
+const CategoryForm = memo(function CategoryForm({ category, categories, onSuccess }: Props) {
   const [message, setMessage] = useState('')
   const [errors, setErrors] = useState({})
 
@@ -64,7 +60,7 @@ const CategoryForm = memo(function CategoryForm({
   useEffect(() => {
     // Evaluate the need for useEffect and LocalStorage for this form.
     // boolean value to indicate form has not been saved.
-    localStorage.setItem('category-form-modified', form.formState.isDirty.toString())
+    localStorage.setItem(IS_CATEGORY_FORM_DIRTY, form.formState.isDirty.toString())
   }, [form.formState.isDirty])
 
   const onSubmit = async () => {
@@ -87,7 +83,7 @@ const CategoryForm = memo(function CategoryForm({
       return
     } else {
       setMessage(result.message)
-      onSuccess(result);
+      onSuccess(result)
       form.reset(form.getValues())
     }
   }
@@ -124,10 +120,10 @@ const CategoryForm = memo(function CategoryForm({
         <form onSubmit={form.handleSubmit(onSubmit)} className=''>
           <div className='flex flex-col gap-6'>
             <TextInput
+              label='Name'
               nameInSchema='name'
-              fieldTitle='Name'
-              placeholder='Something descriptive...'
               className='max-w-72'
+              placeholder='Something descriptive...'
             />
             {showChip && (
               <div>
@@ -149,9 +145,7 @@ const CategoryForm = memo(function CategoryForm({
             />
           </div>
           <div className='pt-6 flex justify-end'>
-            <Button type='submit'>
-              {form.formState.isSubmitting ? 'Loading' : 'Save'}
-            </Button>
+            <Button type='submit'>{form.formState.isSubmitting ? 'Loading' : 'Save'}</Button>
           </div>
         </form>
       </Form>

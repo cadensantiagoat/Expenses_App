@@ -2,7 +2,6 @@
 
 // react / hooks
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 
 // types / server actions
 import type { Expense } from '@/utils/schemas/Expense'
@@ -15,19 +14,19 @@ import { useForm } from 'react-hook-form'
 import { ExpenseSchema } from '@/utils/schemas/Expense'
 
 // components
+import {
+  TextInput,
+  TextareaInput,
+  SelectInput,
+  CurrencyFormattedInput,
+  RadioInput,
+  DateInput,
+} from '@/components/forms/inputs/inputs'
+import { Muted, Small } from '@/components/ui/typography'
+import { FormDescription } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
-import { TextInput, TextareaInput } from '@/components/forms/inputs/text-inputs'
-import { SelectInput } from '@/components/forms/inputs/select-input'
-import { CurrencyFormattedInput } from '@/components/forms/inputs/currency-input'
 import { Form } from '@/components/ui/form'
-import { Muted, P, Small } from '@/components/ui/typography'
-import DatePicker from '@/components/forms/inputs/date-input'
-import Modal from '@/components/Modal'
-import { toast } from 'sonner'
-
-/*
-  TO-DO: Can't see/click Submit button on smaller screens when calendar is visible.
-*/
+import { IS_EXPENSE_FORM_DIRTY } from '@/utils/constants'
 
 type Props = {
   expense: Expense
@@ -38,7 +37,6 @@ type Props = {
 export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
   const [message, setMessage] = useState('')
   const [errors, setErrors] = useState({})
-  const router = useRouter()
 
   const form = useForm<Expense>({
     mode: 'onBlur',
@@ -48,7 +46,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
 
   useEffect(() => {
     // boolean value to indicate form has not been saved.
-    localStorage.setItem('expense-form-modified', form.formState.isDirty.toString())
+    localStorage.setItem(IS_EXPENSE_FORM_DIRTY, form.formState.isDirty.toString())
   }, [form.formState.isDirty])
 
   async function onSubmit() {
@@ -62,6 +60,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
     /* No need to validate here because 
         react-hook-form already validates with 
         our Zod schema */
+    console.log(form.getValues())
     const result = await updateOrCreateExpense(form.getValues())
     if (result?.errors) {
       setMessage(result.message)
@@ -69,13 +68,13 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
       return
     } else {
       setMessage(result.message)
-      onSuccess ? onSuccess(result) : router.back() // temporary workaround. Figure out desired viewing / editing pages.
+      onSuccess ? onSuccess(result) : console.log('onSuccess not found') // temporary workaround. Figure out desired viewing / editing pages.
       form.reset(form.getValues())
     }
   }
 
   return (
-    <div className='p-4'>
+    <>
       {message ? <Muted>{message}</Muted> : null}
 
       {/* Displays error message returned by the server action */}
@@ -89,40 +88,83 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
 
       <Form {...form}>
         <form
-          className='flex flex-col space-y-5'
+          className='flex flex-col space-y-6'
           onSubmit={(e) => {
             e.preventDefault()
             form.handleSubmit(onSubmit)()
           }}
         >
-          <TextInput
-            fieldTitle='Title'
-            nameInSchema='title'
+          {/* Title (text-input */}
+          <div className='max-w-xs'>
+            <TextInput label='Title' nameInSchema='title' disabled={form.formState.isLoading} />
+          </div>
+
+          {/* Description (textarea) */}
+          <TextareaInput
+            label='Description'
+            nameInSchema='description'
             disabled={form.formState.isLoading}
+            optionalLabel
           />
 
-          <TextareaInput
-            fieldTitle='Description'
-            nameInSchema='description'
-            readOnly={form.formState.isLoading}
-            optionalLabel='optional'
-          />
+          {/* Category (select) */}
           <div className='max-w-xs'>
             <SelectInput
-              fieldTitle='Category'
+              label='Category'
               nameInSchema='categoryName'
               placeholder='Select category'
-              selectOptions={categories}
+              options={categories.map((category) => ({
+                value: category.name,
+                label: category.name,
+              }))}
             />
           </div>
-          <div className='max-w-36'>
+
+          {/*  Amount (currency input component) */}
+          <div className=''>
             <CurrencyFormattedInput
               nameInSchema='amount'
-              fieldTitle='Amount'
+              label='Amount'
               placeholder='$0.00'
+              className='w-36'
             />
           </div>
-          <DatePicker fieldTitle='Due Date' nameInSchema='monthlyDueDate' />
+
+          {/* AutopayEnabled (custom radio component) */}
+          <RadioInput
+            nameInSchema='autopayEnabled'
+            label='Is auto pay enabled for this expense?'
+          />
+
+          {/* Due date & Frequency wrapper */}
+          <div className='flex flex-col'>
+            <div className='flex items-center gap-2'>
+              {/* Due date (date-picker) */}
+              <div className='w-[61%]'>
+                <DateInput label='Due Date' nameInSchema='monthlyDueDate' />
+              </div>
+
+              {/* Frequency (select) */}
+              <div className='w-[39%]'>
+                <SelectInput
+                  label='Frequency'
+                  nameInSchema='frequency'
+                  options={[
+                    { value: 'Monthly', label: 'Monthly' },
+                    { value: 'Annual', label: 'Annual' },
+                  ]}
+                />
+              </div>
+            </div>
+            {/* helper text for date picker */}
+            <FormDescription className='w-[61%] pt-3 pl-2'>
+              {form.getValues('frequency') === 'Monthly'
+                ? 'Select the day that this expense is due each month.'
+                : 'Select the date that this expense is due each year.'}
+            </FormDescription>
+          </div>
+
+          {/* Button container */}
           <div className='pt-3 flex'>
             <Button type='submit' className='w-full' disabled={form.formState.isLoading}>
               Save
@@ -130,6 +172,6 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
           </div>
         </form>
       </Form>
-    </div>
+    </>
   )
 }

@@ -163,6 +163,30 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = 'FormMessage';
 
+/* CUSTOM FORM COMPONENT - Wrapper component that wraps input with label, description, and message. */
+const FieldWrapper = ({ label, optionalLabel, description, children, labelNoSpaces, className }: {
+  label: string
+  optionalLabel?: boolean
+  description?: string
+  labelNoSpaces: string
+  children: React.ReactNode
+  className?: string
+}) => {
+  return (
+    <FormItem className={cn('',className)}>
+      <FormLabel htmlFor={labelNoSpaces}>
+        {label}
+        {optionalLabel && (
+          <FormLabel className='pl-2 font-normal text-primary/75'>(optional)</FormLabel>
+        )}
+      </FormLabel>
+      <FormControl>{children}</FormControl>
+      {description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  )
+}
+
 export {
   useFormField,
   Form,
@@ -172,4 +196,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  FieldWrapper
 };

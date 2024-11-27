@@ -14,24 +14,12 @@ import type { Expense } from '@/utils/schemas/Expense'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { formatDate, determineStatusByDate } from '@/utils/utils'
-import { deleteTransaction } from '@/utils/actions'
+// import { deleteTransaction } from '@/utils/actions'
+import { deleteExpense } from '@/actions/expenses'
 import { ColumnHeader } from './column-header'
 import {Chip} from '@/components/ui/chip'
 
-/*
-  need to access all categories and their icons and colors for display in table / chip
-  solution: storing user's categories in object with each key being the categoryName
-  example:
-  {
-    'Personal': { color: '#fff', icon: Angry },
-    'Transportation': { color: '#fff', icon: Fuel },
-  }
-
-  OR (much better, simpler solution):
-    query a user's expenses and categories together and pass category object
-    to the entire row 
-
-*/
+/* TO-DO: evaluate use of event.stopPropagation(); for nested buttons */
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -98,8 +86,9 @@ export const columns: ColumnDef<Expense>[] = [
                 Edit
               </LinkButton>
               <DropdownMenuItem
-                onClick={() => {
-                  deleteTransaction(expense.id)
+                onClick={(event) => {
+                  event.stopPropagation();
+                  deleteExpense(expense.id)
                 }}
               >
                 Delete

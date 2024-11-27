@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useModal, ModalIds } from '@/utils/contexts/modal-context'
 
 import {
   ColumnDef,
@@ -42,6 +43,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState({})
+  const { modals, openModal, closeModal } = useModal()
 
   const table = useReactTable({
     data,
@@ -62,7 +64,7 @@ export function DataTable<TData, TValue>({
   })
 
   const handleRowClick = (expense) => {
-    router.push(`/dashboard/expenses/${expense.id}`)
+    openModal(ModalIds.expenseModal, expense)
   }
 
   return (

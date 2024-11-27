@@ -13,6 +13,8 @@ export const ExpenseSchema = z.object({
     })
     .positive(),
   monthlyDueDate: z.coerce.date().optional(),
+  autopayEnabled: z.coerce.boolean(),
+  frequency: z.enum(['Monthly', 'Annual'])
 })
 
 export type Expense = z.infer<typeof ExpenseSchema>

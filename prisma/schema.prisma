@@ -32,9 +32,10 @@ model Transaction {
   id String @id @default(uuid())
   title          String    @db.Text
   amount         Decimal   @db.Money
-  autopayEnabled Boolean?
+  autopayEnabled Boolean? @default(true)
   monthlyDueDate DateTime?
   description    String?   @db.Text
+  frequency String @default("Monthly")
 
   userId String 
   user   User   @relation(fields: [userId], references: [id])

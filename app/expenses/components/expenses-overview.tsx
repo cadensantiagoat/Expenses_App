@@ -1,7 +1,7 @@
 'use client'
 import { H1, H2, H3, H4, Small, Muted, Large, P } from '@/components/ui/typography'
 import ProgressBar from '../../dashboard/components/progress-bar'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 
 export const ExpensesOverview = () => {
   return (

@@ -42,6 +42,7 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
         monthlyDueDate: expense.monthlyDueDate,
         description: expense.description,
         categoryName: expense.categoryName,
+        autopayEnabled: expense.autopayEnabled
       },
     })
     message = 'Updated expense.'
@@ -55,12 +56,13 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
         monthlyDueDate: expense.monthlyDueDate,
         description: expense.description,
         categoryName: expense.categoryName,
+        autopayEnabled: expense.autopayEnabled
       },
     })
     message = 'Created expense.'
   }
-  revalidatePath('/dashboard')
-  revalidatePath('/dashboard/expenses')
+  revalidatePath('/expenses')
+  // revalidatePath('/dashboard/expenses')
   return { message, response }
 }
 
@@ -142,3 +144,9 @@ export const getExpenseDataForDashboard = memoize(
     logid: 'dashboard:expensesTotalAndCount',
   }
 )
+
+export const deleteExpense = async (id: string) => {
+  await prisma.transaction.delete({ where: { id: id } });
+  console.log('transaction deleted: ID: ', id);
+  revalidatePath('/expenses');
+};
