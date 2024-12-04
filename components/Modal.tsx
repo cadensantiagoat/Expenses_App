@@ -18,6 +18,8 @@ const Modal = ({
   )
 }
 
+// Make Modal responsive for both forms and for all device sizes
+
 const ModalContent = ({
   title,
   children,
