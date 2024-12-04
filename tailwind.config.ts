@@ -61,6 +61,7 @@ const config: Config = {
     extend: {
       gridTemplateRows: {
         expensesLayout: '250px 1fr',
+        expensesPage: 'repeat(auto-fit, minmax(0, 1fr))'
       },
       gridTemplateColumns: {
         expensesGrid: 'repeat(auto-fit, minmax(420px, 1fr))'

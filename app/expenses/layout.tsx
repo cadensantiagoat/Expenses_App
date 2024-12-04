@@ -17,7 +17,7 @@ const ExpensesLayout = async ({ children, overview }: Props) => {
 
   return (
     <Shell>
-      <div className='col-span-full h-full row-span-full px-3'>
+      <div className='h-[calc(100%-64px)] px-3 flex flex-col'>
         {/* HEADER COMPONENT renders:
               - Overview slot
               - Tab links that toggle between 'manage' and 'category' views

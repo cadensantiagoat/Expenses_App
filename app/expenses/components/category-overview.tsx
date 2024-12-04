@@ -14,8 +14,9 @@ import { Small, Muted } from '@/components/ui/typography'
 
 
 export const CategoryOverview = ({ chartData, categories, groupedExpenses }) => {
+
   return (
-    <Card className='flex flex-col w-full md:max-w-[75%] lg:max-w-[50%]'>
+    <div className='flex flex-col w-full md:max-w-[75%] lg:max-w-[50%]'>
       <div className='flex py-6 pr-6'>
         <CategoryPieChart chartData={chartData.results} chartConfig={chartData.config} />
         <div className='w-[50%]'>
@@ -39,7 +40,7 @@ export const CategoryOverview = ({ chartData, categories, groupedExpenses }) => 
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }
 

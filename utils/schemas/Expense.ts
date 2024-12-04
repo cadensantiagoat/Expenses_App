@@ -5,7 +5,7 @@ export const ExpenseSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }).max(60),
   description: z.string().max(120).optional(),
-  categoryName: z.string().optional(),
+  categoryId: z.string().optional(),
   amount: z.coerce
     .number({
       required_error: 'Amount is required.',
@@ -13,6 +13,8 @@ export const ExpenseSchema = z.object({
     })
     .positive(),
   monthlyDueDate: z.coerce.date().optional(),
+  // dueDay: z.number(),
+  // dueMonth: z.number(),
   autopayEnabled: z.coerce.boolean(),
   frequency: z.enum(['Monthly', 'Annual'])
 })

@@ -14,6 +14,31 @@ export const prisma =
     log: ['query'], // <-- logs all DB queries to the terminal
   });
 
+
+// export const prisma =
+//   globalForPrisma.prisma ??
+//   new PrismaClient({
+//     log: ['query'], // <-- logs all DB queries to the terminal
+//   }).$extends({
+//     result: {
+//       transaction: {
+//         status: {
+//           needs: { monthlyDueDate: true, frequency: true},
+//           compute(transaction) {
+//             if (transaction.frequency === 'Monthly') {
+//               const dueDay = transaction.monthlyDueDate?.getDate()
+//               const today = new Date().getDate()
+//               let status = 'Unpaid'
+//               if (today >= dueDay) status = 'Paid'
+//               return status
+//             }
+//           },
+//         }
+//       }
+//     }
+//   })
+
+
 // if not in production, add it to the global.
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 

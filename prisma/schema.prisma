@@ -16,10 +16,10 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  clerkId      String        @unique
-  email        String        @unique
-  name         String?
+  id      String  @id @default(uuid())
+  clerkId String  @unique
+  email   String  @unique
+  name    String?
 
   transactions Transaction[] // A user can have many transactions
   categories   Category[] // A user can have many categories
@@ -29,33 +29,35 @@ model User {
 }
 
 model Transaction {
-  id String @id @default(uuid())
+  id             String    @id @default(uuid())
   title          String    @db.Text
   amount         Decimal   @db.Money
-  autopayEnabled Boolean? @default(true)
+  autopayEnabled Boolean?  @default(true)
   monthlyDueDate DateTime?
+  dueDay         Int       @default(1)
+  dueMonth       Int       @default(0)
   description    String?   @db.Text
-  frequency String @default("Monthly")
+  frequency      String    @default("Monthly")
 
-  userId String 
+  userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  categoryName String?
-  category     Category? @relation(fields: [categoryName], references: [name]) // a Transaction can have one category
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id]) // a Transaction can have one category
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([userId, id])
-  @@index([categoryName]) // defines an index on the field categoryName
+  @@index([categoryId]) // defines an index on the field categoryName
 }
 
 model Category {
   id           String        @id @default(uuid())
-  name         String        @unique @db.Text // might need to remove 'unique' constraint and handle one user having duplicate categories somewhere else.
+  name         String        @db.Text
   transactions Transaction[] // A Category can have many transactions
   user         User          @relation(fields: [userId], references: [id]) // A category can have one user
-  userId       String        
+  userId       String
   color        String?
   icon         String?
 

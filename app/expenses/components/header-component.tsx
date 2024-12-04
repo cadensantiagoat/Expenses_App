@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { usePathname } from 'next/navigation'
 import { IconButton } from '@/components/ui/button'
-import { H2, Small, Muted } from '@/components/ui/typography'
+import { H2, Muted } from '@/components/ui/typography'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { useModal, ModalIds } from '@/utils/contexts/modal-context'
@@ -21,10 +21,6 @@ export const Header = ({ children }: Props) => {
     openModal(ModalIds.categoryModal)
   }
 
-  /*
-     TO-DO: Implement Expense form using modal context to control the modal.
-            It is currently controlled via routing / pathname.
-  */
   const handleNewExpenseClicked = () => {
     openModal(ModalIds.expenseModal)
     console.log('modal opened!')
@@ -32,10 +28,10 @@ export const Header = ({ children }: Props) => {
 
   return (
     <>
-      <div className='flex flex-col gap-2 pt-8 pb-4'>
+      <div className='flex flex-col pt-8 pb-4'>
         <H2 className='border-0'>{path === '/expenses' ? 'Expenses' : 'Categories'}</H2>
         <div className='flex justify-between items-center w-full'>
-          <Muted>{format(new Date(), 'MMMM do, yyyy')}</Muted>
+          <Muted className='pl-[0.12rem]'>{format(new Date(), 'MMMM do, yyyy')}</Muted>
           <IconButton
             iconName={showOverview ? 'ChevronUp' : 'ChevronDown'}
             text={`${showOverview ? 'Hide' : 'Show'} data`}

@@ -69,12 +69,12 @@ export function DataTable<TData, TValue>({
 
   return (
     // Table container
-    <div className='rounded-md col-span-full border p-3'>
+    <div className='rounded-md border p-3 h-full'>
 
         <TableFilterControls table={table} categories={categories} />
 
-      <div className='table-wrapper'>
-        <Table className='overflow-auto'>
+      <div className='table-container overflow-y-scroll'>
+        <Table className=''>
           <TableHeader className='bg-muted'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className='rounded-lg'>

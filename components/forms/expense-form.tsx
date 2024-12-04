@@ -111,10 +111,10 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
           <div className='max-w-xs'>
             <SelectInput
               label='Category'
-              nameInSchema='categoryName'
+              nameInSchema='categoryId'
               placeholder='Select category'
               options={categories.map((category) => ({
-                value: category.name,
+                value: category.id,
                 label: category.name,
               }))}
             />

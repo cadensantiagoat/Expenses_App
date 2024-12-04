@@ -41,7 +41,7 @@ export const ExpenseFormModal = ({ categories }: Props) => {
     amount: '',
     description: '',
     autopayEnabled: true,
-    categoryName: '',
+    categoryId: '',
     frequency: 'Monthly',
     monthlyDueDate: new Date(),
   }

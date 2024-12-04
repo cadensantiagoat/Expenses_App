@@ -13,13 +13,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import type { Expense } from '@/utils/schemas/Expense'
 import { MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { formatDate, determineStatusByDate } from '@/utils/utils'
-// import { deleteTransaction } from '@/utils/actions'
+import { formatDate } from '@/utils/utils'
 import { deleteExpense } from '@/actions/expenses'
 import { ColumnHeader } from './column-header'
-import {Chip} from '@/components/ui/chip'
-
-/* TO-DO: evaluate use of event.stopPropagation(); for nested buttons */
+import { Chip } from '@/components/ui/chip'
+import { updateMonthToCurrent } from '@/utils/utils'
+import { formatCurrency } from '@/utils/utils'
+import { StatusChip } from './status-chip'
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -31,33 +31,45 @@ export const columns: ColumnDef<Expense>[] = [
     header: ({ column }) => <ColumnHeader title='Category' column={column} />,
     filterFn: 'arrIncludesSome',
     cell: ({ row }) => {
-      const categoryData = row.original.category;
+      const categoryData = row.original.category
       return categoryData ? (
-        <Chip title={categoryData.name} color={categoryData.color} iconName={categoryData.icon}/>
+        <Chip title={categoryData.name} color={categoryData.color} iconName={categoryData.icon} />
       ) : null
-    }
+    },
   },
   {
     accessorKey: 'monthlyDueDate',
     header: ({ column }) => <ColumnHeader title='Due' column={column} />,
-    cell: ({ row }) => formatDate(row.getValue('monthlyDueDate')),
+    cell: ({ row }) => {
+      const dueDate = row.getValue('monthlyDueDate')
+
+      if (row.original.frequency === 'Monthly') {
+        const updatedDate = updateMonthToCurrent(dueDate)
+        return formatDate(updatedDate)
+      }
+      return formatDate(row.getValue('monthlyDueDate'))
+    },
   },
   {
     accessorKey: 'amount',
     header: ({ column }) => <ColumnHeader title='Amount' column={column} align='right' />,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'))
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount)
-      return <div className='text-right'>{formatted}</div>
+      const formattedAmount = formatCurrency(parseFloat(row.getValue('amount')))
+      return <div className='text-right'>{formattedAmount}</div>
     },
   },
   {
     accessorKey: 'status',
     header: ({ column }) => <ColumnHeader title='Status' align='center' column={column} />,
-    cell: ({ row }) => <div className='text-center'>{determineStatusByDate(row.getValue('monthlyDueDate'))}</div>,
+    cell: ({ row }) => {
+      const status = row.original.dueDay <= new Date().getDate()
+
+      return (
+        <div className='text-center'>
+          <StatusChip status={status} />
+        </div>
+      )
+    },
   },
 
   {
@@ -77,17 +89,13 @@ export const columns: ColumnDef<Expense>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <LinkButton path={`/dashboard/expenses/${expense.id}`}>
-                View expense
-              </LinkButton>
+              <LinkButton path={`/dashboard/expenses/${expense.id}`}>View expense</LinkButton>
 
               <DropdownMenuSeparator />
-              <LinkButton path={`/dashboard/expenses/edit/${expense.id}`}>
-                Edit
-              </LinkButton>
+              <LinkButton path={`/dashboard/expenses/edit/${expense.id}`}>Edit</LinkButton>
               <DropdownMenuItem
                 onClick={(event) => {
-                  event.stopPropagation();
+                  event.stopPropagation()
                   deleteExpense(expense.id)
                 }}
               >
@@ -110,7 +118,7 @@ const LinkButton = ({ path, children }: LinkButtonProps) => {
   const router = useRouter()
   const handleClick = (event) => {
     event.stopPropagation()
-    router.push(path) 
+    router.push(path)
   }
   return <DropdownMenuItem onClick={handleClick}>{children}</DropdownMenuItem>
 }

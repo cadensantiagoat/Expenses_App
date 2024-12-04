@@ -29,6 +29,9 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
   let message
   let response
 
+  const day = expense.monthlyDueDate?.getDate();
+  const month = expense.monthlyDueDate?.getMonth();
+
   // if the expense has an ID
   if (expense.id) {
     // update it
@@ -40,8 +43,10 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
         title: expense.title,
         amount: expense.amount,
         monthlyDueDate: expense.monthlyDueDate,
+        dueDay: day,
+        dueMonth: month,
         description: expense.description,
-        categoryName: expense.categoryName,
+        categoryId: expense.categoryId,
         autopayEnabled: expense.autopayEnabled
       },
     })
@@ -54,8 +59,10 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
         title: expense.title,
         amount: expense.amount,
         monthlyDueDate: expense.monthlyDueDate,
+        dueDay: day,
+        dueMonth: month,
         description: expense.description,
-        categoryName: expense.categoryName,
+        categoryId: expense.categoryId,
         autopayEnabled: expense.autopayEnabled
       },
     })

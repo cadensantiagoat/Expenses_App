@@ -104,7 +104,7 @@ export const groupExpensesByCategory = memoize(
     const user = await getCurrentUser()
 
     const groupedExpenses = await prisma.transaction.groupBy({
-      by: ['categoryName'],
+      by: ['categoryId'],
       where: {
         userId: user.id,
       },

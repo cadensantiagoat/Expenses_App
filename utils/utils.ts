@@ -1,14 +1,33 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { format, isFuture, isPast } from 'date-fns'
+import { format, isFuture, isPast, formatISO } from 'date-fns'
 import { pSBC } from './color-converter'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/* DATE HELPERS */
+
+// TEMPORARY SOLUTION to update to current month. Should change DB type or figure out solution to store due date for each month.
+export function updateMonthToCurrent(date: string | Date) {
+  // convert Date object to ISO string if 'date' is not a string.
+  const dateString = typeof date === 'object' ? formatISO(date) : date
+  const dateParts = dateString.split('-')
+  const day = dateParts[2].slice(0, 2)
+
+  // construct new date with current month
+  return new Date(dateParts[0], new Date().getMonth(), day)
+}
+// if (transaction.frequency === 'Monthly') {
+//   const dueDay = transaction.monthlyDueDate?.getDate()
+//   const today = new Date().getDate()
+//   let status = 'Unpaid'
+//   if (today >= dueDay) status = 'Paid'
+//   return status
+// }
 export const formatDate = (date: Date) => {
-  return format(new Date(date), 'do')
+  return format(new Date(date), 'MMM do')
 }
 
 export const determineStatusByDate = (date: Date) => {
@@ -19,8 +38,17 @@ export const determineStatusByDate = (date: Date) => {
   else return 'pending'
 }
 
+/* NUMBER HELPERS */
 export const randomNumber = (max: number) => {
   return Math.floor(Math.random() * max)
+}
+
+export const formatCurrency = (number: number | bigint, currency = 'USD', language = 'en-US') => {
+  const result = new Intl.NumberFormat(language, {
+    style: 'currency',
+    currency: currency,
+  }).format(number)
+  return result
 }
 
 /* 
@@ -28,12 +56,12 @@ export const randomNumber = (max: number) => {
   Should handle as much computation and sorting at the database level
 */
 const buildChartConfig = (data) => {
-  let config = {};
+  let config = {}
   for (let i = 0; i < data.length; i++) {
     const key = data[i].name.toLowerCase().replace(' ', '_')
     config[key] = {
       label: data[i].name,
-      color: data[i].fill
+      color: data[i].fill,
     }
   }
   return config
@@ -46,19 +74,20 @@ export const buildChartData = async (groupedData, categories) => {
   // build chart data array of objects. Need to build a query to get this instead
   let results = []
   for (let i = 0; i < groupedData.length; i++) {
-      results.push({
-          name: groupedData[i].categoryName,
-          count: groupedData[i]._count,
-          sum: parseFloat(groupedData[i]._sum.amount) 
-      })
-      for (let j = 0; j < categories.length; j++) {
-          if (groupedData[i].categoryName === categories[j].name) {
-              results[i].fill = pSBC(0.36, categories[j].color)
-          }
+    results.push({
+      id: groupedData[i].categoryId,
+      count: groupedData[i]._count,
+      sum: parseFloat(groupedData[i]._sum.amount),
+    })
+    for (let j = 0; j < categories.length; j++) {
+      if (groupedData[i].categoryId === categories[j].id) {
+        results[i].fill = pSBC(0.36, categories[j].color)
+        results[i].name = categories[j].name
       }
+    }
   }
   // pass chart data to build config function
-  const config = buildChartConfig(results);
-  return {results, config};
+  const config = buildChartConfig(results)
+  return { results, config }
 }
 /* END TEMPORARY SOLUTION */
