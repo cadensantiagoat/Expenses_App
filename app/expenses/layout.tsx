@@ -4,6 +4,7 @@ import { Header } from './components/header-component'
 import { ExpenseFormModal } from './components/expense-form-modal'
 import {  getCategories } from '@/actions/categories'
 import { getCurrentUser } from '@/utils/auth'
+import CategoryFormModal from '@/components/category-modal-form'
 
 
 type Props = {
@@ -30,6 +31,7 @@ const ExpensesLayout = async ({ children, overview }: Props) => {
         {/* Renders the data-table or category-table depending on URL */}
         {children}
         <ExpenseFormModal categories={categories} />
+        <CategoryFormModal />
       </div>
     </Shell>
   )

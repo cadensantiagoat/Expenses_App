@@ -15,8 +15,16 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Gauge } from '@/components/Gauge'
 import { Chip } from '@/components/ui/chip'
+import { Button } from '@/components/ui/button'
+import { useModal, ModalIds } from '@/utils/contexts/modal-context'
 
 export const CategoryTable = ({ categories, groupedExpenses, transactions }) => {
+
+  const {modals, openModal} = useModal()
+  const handleEditClicked = () => {
+
+    openModal(ModalIds.categoryModal)
+  }
   return (
     <div className='rounded-md w-full border'>
       <Table>
@@ -25,6 +33,7 @@ export const CategoryTable = ({ categories, groupedExpenses, transactions }) => 
             <TableHead className='w-[210px]'>Category</TableHead>
             <TableHead>Total due</TableHead>
             <TableHead className='text-center'>Progress</TableHead>
+            <TableHead className='text-center'></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -55,6 +64,9 @@ export const CategoryTable = ({ categories, groupedExpenses, transactions }) => 
                           </TableCell>
                           <TableCell className='text-center'>
                             <Gauge value={100 - index * 21} size='small' />
+                          </TableCell>
+                          <TableCell className='text-center'>
+                            <Button variant={"ghost"} size={"sm"} onClick={handleEditClicked}>Edit</Button>
                           </TableCell>
                         </TableRow>
                       </CollapsibleTrigger>
