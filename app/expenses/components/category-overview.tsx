@@ -9,6 +9,16 @@ import { useUI } from '@/utils/contexts/ui-context'
 export const CategoryOverview = ({ chartData }) => {
   const { state } = useUI()
 
+  console.log(chartData)
+
+  if (chartData.results.length < 1) {
+    return (
+      <Card className='flex items-center gap-3 h-[120px] w-[100%] p-6 justify-evenly shadow-none rounded-lg'>
+        You haven't added any expenses yet, create one now!
+      </Card>
+    )
+  }
+
   return (
     state.showOverview && (
       <Card className='flex items-center gap-3 h-full w-[100%] justify-evenly shadow-none rounded-lg'>

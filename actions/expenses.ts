@@ -160,4 +160,5 @@ export const deleteExpense = async (id: string) => {
   await prisma.transaction.delete({ where: { id: id } })
   console.log('transaction deleted: ID: ', id)
   revalidatePath('/expenses')
+  revalidatePath('/expenses/categories')
 }
