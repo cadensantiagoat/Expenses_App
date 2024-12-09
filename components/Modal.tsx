@@ -37,10 +37,11 @@ const ModalContent = ({
         aria-describedby={undefined}
         onInteractOutside={onInteractOutside}
         className={
-          'fixed left-[50%] top-[50%] z-20 grid w-full h-[90%] max-w-xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-3 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg'
+          // 'fixed left-[50%] top-[50%] z-20 grid w-full h-[90%] max-w-xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-3 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg'
+          'fixed max-w-3xl min-w-[491px] w-fit left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] h-auto z-20 flex items-center justify-center border bg-background p-3 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg'
         }
       >
-        <div className='modal-content-wrapper overflow-auto max-h-[900px] p-5'>
+        <div className='modal-content-wrapper overflow-auto max-h-[900px] p-5 w-full'>
           <div className='flex items-center justify-between pb-5'>
             <DialogPrimitive.Title className='scroll-m-20 text-h4 font-medium tracking-tight'>
               {title}

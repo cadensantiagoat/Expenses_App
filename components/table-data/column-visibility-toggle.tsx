@@ -47,9 +47,7 @@ export function DataTableVisibilityToggle<TData>({ table }: ToggleProps<TData>) 
           .getAllColumns()
           .filter(
             (column) =>
-              typeof column.accessorFn !== 'undefined' &&
-              column.getCanHide() &&
-              column.id !== 'id' // added third condition so the 'action' column does not display in menu
+              typeof column.accessorFn !== 'undefined' && column.getCanHide() && column.id !== 'id' // added third condition so the 'action' column does not display in menu
           )
           .map((column, index) => {
             return (

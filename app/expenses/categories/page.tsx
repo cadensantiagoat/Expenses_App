@@ -1,27 +1,33 @@
-import { getCurrentUser } from '@/utils/auth'
-import { getExpenseDataForDashboard } from '@/actions/expenses'
 import { groupExpensesByCategory, getCategoriesAndTransactions } from '@/actions/categories'
-import { CategoryTable } from '@/app/expenses/components/category-table'
+import { SkeletonOverview } from '@/components/loaders/skeletons'
+import { CategoryList } from '../components/category-list'
+import { buildChartData } from '@/utils/utils'
+import { getCurrentUser } from '@/utils/auth'
+import dynamic from 'next/dynamic'
+
+const DynamicOverview = dynamic(
+  () => import('../components/category-overview').then((mod) => mod.CategoryOverview),
+  {
+    ssr: false,
+    loading: () => <SkeletonOverview />,
+  }
+)
 
 const CategoryPage = async () => {
   const user = await getCurrentUser()
+  const categories = await getCategoriesAndTransactions(user.id)
   const groupedExpenses = await groupExpensesByCategory()
-  const categories = await getCategoriesAndTransactions()
-  const { transactions } = await getExpenseDataForDashboard(user.id)
+  const chartData = await buildChartData(groupedExpenses, categories)
 
   return (
-    <div className='col-span-full h-full row-span-full px-3'>
-      <div className='category-body'>
-
-            <div className='flex w-full h-full'>
-      <CategoryTable
-        categories={categories}
-        groupedExpenses={groupedExpenses}
-        transactions={transactions}
-      />
-    </div>
+    <>
+      <div className='w-full'>
+        <DynamicOverview chartData={chartData} />
       </div>
-    </div>
+      <div className='flex w-full h-full py-6'>
+        <CategoryList categories={categories} />
+      </div>
+    </>
   )
 }
 

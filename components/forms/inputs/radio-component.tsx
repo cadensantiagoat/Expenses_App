@@ -8,7 +8,7 @@ const radioOptions = [
   {
     value: true,
     label: 'Auto pay enabled',
-    description: 'This expense will automatically be marked as paid on the due date.',
+    description: 'This expense will be marked as paid on the due date.',
   },
   {
     value: false,
@@ -28,7 +28,7 @@ export const RadioComponent = ({ onValueChange, defaultValue, value }: Props) =>
     <RadioGroup
       onValueChange={onValueChange}
       defaultValue={defaultValue}
-      className='flex flex-col space-y-1'
+      className='grid grid-cols-2'
     >
       {radioOptions.map((option) => {
         return (
@@ -48,7 +48,7 @@ export const RadioComponent = ({ onValueChange, defaultValue, value }: Props) =>
 type ItemProps = {
   value: boolean
   label: string
-  description: string
+  description?: string
   active?: boolean
 }
 
@@ -57,16 +57,16 @@ const RadioItem = ({ value, label, description, active }: ItemProps) => {
   return (
     <div
       className={cn(
-        `grid grid-rows-2 border border-muted grid-cols-[36px_auto] rounded-md p-2 items-center bg-muted`,
+        `grid grid-rows-[36px_auto] grid-cols-[36px_auto] border border-muted rounded-md p-2 items-center bg-muted`,
         activeClass
       )}
     >
       <FormControl className='col-span-1 items-center justify-self-center'>
-        <RadioGroupItem value={value} />
+        <RadioGroupItem value={value}/>
       </FormControl>
       <FormLabel className='mt-0'>{label}</FormLabel>
 
-      <FormDescription className='col-start-2 pb-2'>{description}</FormDescription>
+      {/* <FormDescription className='col-start-2 pb-2 justify-self-start'>{description}</FormDescription> */}
     </div>
   )
 }

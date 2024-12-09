@@ -2,16 +2,13 @@
 
 // react / hooks
 import { useState, useEffect, memo } from 'react'
-
 // types / server actions
 import { CategorySchema, type Category } from '@/utils/schemas/Category'
 import { IS_CATEGORY_FORM_DIRTY } from '@/utils/constants'
 import { upsertCategory } from '@/actions/categories'
-
 // form helpers
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-
 // components
 import { TextInput } from '@/components/forms/inputs/inputs'
 import { Small, Muted } from '../ui/typography'
@@ -20,21 +17,6 @@ import { IconInput } from './inputs/icon-input'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { Chip } from '../ui/chip'
-
-/* 
-  BEFORE IDEA: Fuly implement category form and Expense form and decide where users can access forms.
-  
-  IDEA: Nest category form within expense form under 'customize category' radio button?
-  Initial category creation can be done via combobox, on 'no results found' display save / submit
-  button that creates the category and then opens customize category form with category ID and title
-  in default values and then update color and icon fields?
-
-  TO-DO:
-  - implement this form in a modal using ModalContext
-  - implement clear functionality for icon and color input.
-  - implement loading states
-  - test / implement edit category functionality
-*/
 
 type Props = {
   category: Category
@@ -48,6 +30,7 @@ const CategoryForm = memo(function CategoryForm({ category, categories, onSucces
   const [errors, setErrors] = useState({})
 
   // used for displaying preview chip while selecting color and icon.
+  const [previewText, setPreviewText] = useState(category.name)
   const [colorValue, setColorValue] = useState(category.color)
   const [iconValue, setIconValue] = useState(category.icon)
 
@@ -58,24 +41,21 @@ const CategoryForm = memo(function CategoryForm({ category, categories, onSucces
   })
 
   useEffect(() => {
-    // Evaluate the need for useEffect and LocalStorage for this form.
-    // boolean value to indicate form has not been saved.
-    localStorage.setItem(IS_CATEGORY_FORM_DIRTY, form.formState.isDirty.toString())
-  }, [form.formState.isDirty])
+    // default (initial) form values
+    const { color, icon } = form.formState.defaultValues
+    // if color or icon has been changed, set local storage item to true.
+    if (color !== colorValue || icon !== iconValue || form.formState.isDirty) {
+      localStorage.setItem(IS_CATEGORY_FORM_DIRTY, 'true')
+    } else {
+      localStorage.setItem(IS_CATEGORY_FORM_DIRTY, 'false')
+    }
+  }, [form.formState.isDirty, form.formState.defaultValues, colorValue, iconValue])
 
   const onSubmit = async () => {
-    if (!form.formState.isDirty) {
-      setMessage('No changes detected. Try again or close the modal by clicking outside.')
-      return
-    }
-
     setMessage('')
     setErrors({})
-    /* No need to validate here because 
-        react-hook-form already validates with 
-        our Zod schema */
 
-    console.log('form values sent to server action: ', form.getValues())
+    console.log('formData: ', form.getValues())
     const result = await upsertCategory(form.getValues())
     if (result?.errors) {
       setMessage(result.message)
@@ -88,20 +68,27 @@ const CategoryForm = memo(function CategoryForm({ category, categories, onSucces
     }
   }
 
+  // CLICK / EVENT HANDLERS
+  const handleNameChange = (e: any, field: any) => {
+    setPreviewText(e.target.value)
+    field.onChange(e.target.value)
+  }
+
   const handleIconChange = (event: string) => {
     form.setValue('icon', event)
     setIconValue(event)
   }
 
   const handleColorChange = (color: string) => {
-    setColorValue(color)
     form.setValue('color', color)
+    setColorValue(color)
   }
 
   /* condition to toggle preview of category chip in form. */
   const showChip =
     form.formState.touchedFields.name &&
-    form.getValues('name') !== '' &&
+    previewText !== '' &&
+    previewText.length > 2 &&
     !form.getFieldState('name').error
 
   return (
@@ -112,40 +99,53 @@ const CategoryForm = memo(function CategoryForm({ category, categories, onSucces
       {errors && message != '' && (
         <div className='py-3 text-red-500'>
           {Object.keys(errors).map((key) => (
-            <Small key={key}>{`${key}: ${errors[key as keyof typeof errors]}`}</Small>
+            <Small key={key}>{`${errors[key as keyof typeof errors]}`}</Small>
           ))}
         </div>
       )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=''>
           <div className='flex flex-col gap-6'>
-            <TextInput
-              label='Name'
-              nameInSchema='name'
-              className='max-w-72'
-              placeholder='Something descriptive...'
-            />
-            {showChip && (
-              <div>
-                <Chip title={form.getValues('name')} iconName={iconValue} color={colorValue} />
+            <div className='flex gap-3'>
+              <div className='min-w-64 grow'>
+                <TextInput
+                  label='Name'
+                  nameInSchema='name'
+                  placeholder='Something descriptive...'
+                  onChange={handleNameChange}
+                  value={previewText}
+                />
               </div>
-            )}
-            <ColorInput
-              form={form}
-              nameInSchema='color'
-              fieldTitle='Color'
-              handleChange={handleColorChange}
-              defaultValue={colorValue}
-            />
-            <IconInput
-              nameInSchema='icon'
-              fieldTitle='Icon'
-              handleChange={handleIconChange}
-              defaultValue={iconValue}
-            />
+              {showChip && (
+                <div className='self-end flex-nowrap'>
+                  <Chip
+                    title={form.getValues('name')}
+                    iconName={iconValue}
+                    color={colorValue ? colorValue : 'default'}
+                  />
+                </div>
+              )}
+            </div>
+            <div className='flex gap-6 max-w-[262px]'>
+              <ColorInput
+                nameInSchema='color'
+                fieldTitle='Color'
+                handleChange={handleColorChange}
+                defaultValue={colorValue}
+                value={colorValue}
+              />
+              <IconInput
+                nameInSchema='icon'
+                fieldTitle='Icon'
+                handleChange={handleIconChange}
+                defaultValue={iconValue}
+              />
+            </div>
           </div>
-          <div className='pt-6 flex justify-end'>
-            <Button type='submit'>{form.formState.isSubmitting ? 'Loading' : 'Save'}</Button>
+          <div className='pt-6 flex items-center justify-center gap-3'>
+            <Button type='submit' className='w-full'>
+              {form.formState.isSubmitting ? 'Loading' : 'Save'}
+            </Button>
           </div>
         </form>
       </Form>

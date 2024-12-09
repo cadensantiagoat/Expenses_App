@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${satoshi.variable} font-sans`}>
         <Providers>
           {children}
-          <Toaster />
+          <Toaster position='bottom-left' richColors closeButton />
         </Providers>
       </body>
     </html>

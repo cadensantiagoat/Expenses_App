@@ -9,9 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
   ColorSelectItem,
+  SelectSeparator,
+  SelectItem,
 } from '@/components/ui/select'
 
 const defaultColors = [
+  // '#F8FAFC', // Default chip background color
   '#f44336',
   '#e91e63',
   '#9c27b0',
@@ -33,25 +36,30 @@ const defaultColors = [
 ]
 
 type InputProps = {
-  form: any
   nameInSchema: string
   fieldTitle: string
   handleChange: (color: any) => void
   defaultValue?: string
+  value: string | undefined
 }
 
-const ColorInput = ({ form, defaultValue, nameInSchema, fieldTitle, handleChange }: InputProps) => {
+const ColorInput = ({
+  value,
+  defaultValue,
+  nameInSchema,
+  fieldTitle,
+  handleChange,
+}: InputProps) => {
   return (
-    <div className='space-y-2'>
-      <FormLabel className='pb-1'>
-        {fieldTitle}
-        <span className='pl-2 font-normal text-primary/75'>(optional)</span>
-      </FormLabel>
+    <div className='space-y-2 w-full'>
+      <FormLabel>{fieldTitle}</FormLabel>
       <ColorSelect
         name={nameInSchema}
         handleChange={handleChange}
         defaultValue={defaultValue}
+        value={value}
       />
+      <span className='pl-1 text-xs font-normal text-primary/75'>Optional</span>
     </div>
   )
 }
@@ -61,21 +69,19 @@ type ColorSelectProps = {
   handleChange: (color: string) => void
   selectOptions?: string[]
   defaultValue?: string
+  value: string | undefined
 }
 
 const ColorSelect = ({
   name,
   handleChange,
   selectOptions = defaultColors,
-  defaultValue,
+  defaultValue = defaultColors[0],
+  value,
 }: ColorSelectProps) => {
   return (
-    <Select
-      onValueChange={handleChange}
-      name={name}
-      defaultValue={defaultValue}
-    >
-      <SelectTrigger className='w-[81px]'>
+    <Select onValueChange={handleChange} name={name} defaultValue={defaultValue} value={value}>
+      <SelectTrigger className='min-w-[81px]'>
         <SelectValue placeholder='Select' />
       </SelectTrigger>
       <SelectContent>
@@ -85,12 +91,19 @@ const ColorSelect = ({
               return (
                 <ColorSelectItem key={item} value={item} className='rounded-sm p-0'>
                   <div className='p-1'>
-                    <div style={{ backgroundColor: item }} className='rounded-full h-[16px] w-[16px]' />
+                    <div
+                      style={{ backgroundColor: item }}
+                      className='rounded-full h-[16px] w-[16px]'
+                    />
                   </div>
                 </ColorSelectItem>
               )
             })}
           </div>
+          <SelectSeparator />
+          <SelectItem key={'default'} value='default'>
+            Default
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

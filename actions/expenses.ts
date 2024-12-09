@@ -8,10 +8,12 @@ import { getCurrentUser } from '@/utils/auth'
 import { revalidatePath } from 'next/cache'
 import { ExpenseSchema } from '@/utils/schemas/Expense'
 import type { Expense } from '@/utils/schemas/Expense'
+import { normalizeDate } from '@/utils/utils'
 
 type ReturnType = {
   message: string
   errors?: Record<string, unknown>
+  error?: any
   response?: Expense
 }
 
@@ -25,63 +27,66 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
     }
   }
 
-  const user = await getCurrentUser()
-  let message
-  let response
+  try {
+    const user = await getCurrentUser()
+    let message, response
 
-  const day = expense.monthlyDueDate?.getDate();
-  const month = expense.monthlyDueDate?.getMonth();
+    const dueDate = normalizeDate(expense.monthlyDueDate)
+    const day = dueDate.getDate()
+    const month = dueDate.getMonth()
 
-  // if the expense has an ID
-  if (expense.id) {
-    // update it
-    response = await prisma.transaction.update({
-      where: { id: expense.id },
-      data: {
-        id: expense.id,
-        userId: user.id,
-        title: expense.title,
-        amount: expense.amount,
-        monthlyDueDate: expense.monthlyDueDate,
-        dueDay: day,
-        dueMonth: month,
-        description: expense.description,
-        categoryId: expense.categoryId,
-        autopayEnabled: expense.autopayEnabled
-      },
-    })
-    message = 'Updated expense.'
-  } else {
-    // create it
-    response = await prisma.transaction.create({
-      data: {
-        userId: user.id,
-        title: expense.title,
-        amount: expense.amount,
-        monthlyDueDate: expense.monthlyDueDate,
-        dueDay: day,
-        dueMonth: month,
-        description: expense.description,
-        categoryId: expense.categoryId,
-        autopayEnabled: expense.autopayEnabled
-      },
-    })
-    message = 'Created expense.'
+    // if the expense has an ID
+    if (expense.id) {
+      // update it
+      response = await prisma.transaction.update({
+        where: { id: expense.id },
+        data: {
+          id: expense.id,
+          userId: user.id,
+          title: expense.title,
+          amount: expense.amount,
+          monthlyDueDate: expense.monthlyDueDate,
+          dueDay: day,
+          dueMonth: month,
+          description: expense.description,
+          categoryId: expense.categoryId,
+          autopayEnabled: expense.autopayEnabled,
+        },
+      })
+      message = 'Updated expense.'
+    } else {
+      // create it
+      response = await prisma.transaction.create({
+        data: {
+          userId: user.id,
+          title: expense.title,
+          amount: expense.amount,
+          monthlyDueDate: expense.monthlyDueDate,
+          dueDay: day,
+          dueMonth: month,
+          description: expense.description,
+          categoryId: expense.categoryId,
+          autopayEnabled: expense.autopayEnabled,
+        },
+      })
+      message = 'Created expense.'
+    }
+    revalidatePath('/expenses')
+    return { message, response }
+  } catch (error) {
+    return { message: 'Something went wrong.', errors: true, error: error.message }
   }
-  revalidatePath('/expenses')
-  // revalidatePath('/dashboard/expenses')
-  return { message, response }
 }
 
 // Gets and returns an ordered list of transactions by userId
 export const getAllExpenses = memoize(
   async (userId: string) => {
     // simulates random load time (REMOVE)
-    await delay()
+    // await delay()
 
     const data = await prisma.transaction.findMany({
       where: { userId: userId },
-      include: {category: true },
+      include: { category: true },
       orderBy: [{ monthlyDueDate: 'desc' }],
     })
 
@@ -100,7 +105,7 @@ export const getAllExpenses = memoize(
 )
 
 export const getOneExpense = async (userId: string, expenseId: string) => {
-  await delay()
+  // await delay()
 
   const expense = await prisma.transaction.findFirst({
     where: {
@@ -119,7 +124,7 @@ export const getOneExpense = async (userId: string, expenseId: string) => {
 export const getExpenseDataForDashboard = memoize(
   async (userId: string) => {
     // simulates random load time (REMOVE)
-    await delay()
+    // await delay()
 
     const userWithTransactions = await prisma.user.findFirst({
       where: { id: userId },
@@ -130,8 +135,7 @@ export const getExpenseDataForDashboard = memoize(
 
     const total = response.transactions
       .reduce(
-        (accumulator: number, currentValue: any) =>
-          accumulator + parseFloat(currentValue.amount),
+        (accumulator: number, currentValue: any) => accumulator + parseFloat(currentValue.amount),
         0
       )
       .toFixed(2)
@@ -153,7 +157,7 @@ export const getExpenseDataForDashboard = memoize(
 )
 
 export const deleteExpense = async (id: string) => {
-  await prisma.transaction.delete({ where: { id: id } });
-  console.log('transaction deleted: ID: ', id);
-  revalidatePath('/expenses');
-};
+  await prisma.transaction.delete({ where: { id: id } })
+  console.log('transaction deleted: ID: ', id)
+  revalidatePath('/expenses')
+}

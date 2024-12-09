@@ -61,5 +61,6 @@ model Category {
   color        String?
   icon         String?
 
+  @@unique([userId, name])
   @@index([userId])
 }

@@ -59,11 +59,12 @@ interface IconButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   iconName: string;
+  iconSize?: number;
   text: string
 }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ className, variant, size, asChild = false, iconName, text, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, iconName, iconSize = 16, text, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
@@ -71,7 +72,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         ref={ref}
         {...props}
       >
-        <Icon name={iconName} size={16} className='mr-2' />
+        <Icon name={iconName} size={iconSize} className='mr-2' />
         {text}
       </Comp>
     );

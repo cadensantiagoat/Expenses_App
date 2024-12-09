@@ -41,5 +41,6 @@
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
   "typescript.surveys.enabled": false,
-  "workbench.settings.editor": "json"
+  "workbench.settings.editor": "json",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

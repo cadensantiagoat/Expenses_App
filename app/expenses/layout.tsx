@@ -1,18 +1,17 @@
 import React from 'react'
 import Shell from '@/components/shell/Shell'
 import { Header } from './components/header-component'
-import { ExpenseFormModal } from './components/expense-form-modal'
-import {  getCategories } from '@/actions/categories'
+import { ExpenseFormModal } from './components/expense-modal'
+import { getCategories } from '@/actions/categories'
 import { getCurrentUser } from '@/utils/auth'
-import CategoryFormModal from '@/components/category-modal-form'
-
+import CategoryFormModal from '@/app/expenses/components/category-modal'
 
 type Props = {
   children: React.ReactNode
   overview: React.ReactNode
 }
 
-const ExpensesLayout = async ({ children, overview }: Props) => {
+const ExpensesLayout = async ({ children }: Props) => {
   const user = await getCurrentUser()
   const categories = await getCategories(user.id)
 
@@ -24,10 +23,8 @@ const ExpensesLayout = async ({ children, overview }: Props) => {
               - Tab links that toggle between 'manage' and 'category' views
               - Add Expense, Add Category buttons 
         */}
-        <Header>
-          {overview}
-        </Header>
-        
+        <Header />
+
         {/* Renders the data-table or category-table depending on URL */}
         {children}
         <ExpenseFormModal categories={categories} />

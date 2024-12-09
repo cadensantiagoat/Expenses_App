@@ -6,11 +6,6 @@ import Icon from '../Icon'
 
 const navLinks = [
   {
-    title: 'Home',
-    url: '/dashboard',
-    icon: <Icon name='House' />
-  },
-  {
     title: 'Expenses',
     url: '/expenses',
     icon: <Icon name='HandCoins' />

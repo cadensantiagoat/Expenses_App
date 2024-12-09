@@ -21,6 +21,8 @@ import { updateMonthToCurrent } from '@/utils/utils'
 import { formatCurrency } from '@/utils/utils'
 import { StatusChip } from './status-chip'
 
+// TO-DO: Implement Toast message on Delete success
+
 export const columns: ColumnDef<Expense>[] = [
   {
     accessorKey: 'title',
@@ -89,10 +91,9 @@ export const columns: ColumnDef<Expense>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <LinkButton path={`/dashboard/expenses/${expense.id}`}>View expense</LinkButton>
+
 
               <DropdownMenuSeparator />
-              <LinkButton path={`/dashboard/expenses/edit/${expense.id}`}>Edit</LinkButton>
               <DropdownMenuItem
                 onClick={(event) => {
                   event.stopPropagation()
@@ -108,17 +109,3 @@ export const columns: ColumnDef<Expense>[] = [
     },
   },
 ]
-
-type LinkButtonProps = {
-  path: string
-  children: string
-}
-
-const LinkButton = ({ path, children }: LinkButtonProps) => {
-  const router = useRouter()
-  const handleClick = (event) => {
-    event.stopPropagation()
-    router.push(path)
-  }
-  return <DropdownMenuItem onClick={handleClick}>{children}</DropdownMenuItem>
-}

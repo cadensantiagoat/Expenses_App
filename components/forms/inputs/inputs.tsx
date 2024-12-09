@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/utils/utils'
-import { Textarea } from '../../ui/textarea'
+import { Textarea, TextareaProps } from '../../ui/textarea'
 import { Input } from '@/components/ui/input'
 import { useFormContext } from 'react-hook-form'
 import { RadioComponent } from './radio-component'
@@ -24,6 +24,8 @@ interface InputProps {
   nameInSchema: string
   optionalLabel?: boolean
   placeholder?: string
+  onChange?: (e: any, field: any) => void
+  value?: string
 }
 
 const TextInput = ({
@@ -34,6 +36,8 @@ const TextInput = ({
   disabled,
   optionalLabel,
   className,
+  onChange,
+  value,
 }: InputProps) => {
   const form = useFormContext()
   const labelNoSpaces = label.replaceAll(' ', '-')
@@ -52,10 +56,10 @@ const TextInput = ({
           <Input
             {...field}
             className={cn('w-full', className)}
-            value={field.value}
+            value={onChange ? value : field.value}
             id={labelNoSpaces}
             placeholder={placeholder || label}
-            onChange={(e) => field.onChange(e.target.value)}
+            onChange={onChange ? (e) => onChange(e, field) : (e) => field.onChange(e.target.value)}
             disabled={disabled}
           />
         </FieldWrapper>
@@ -76,9 +80,11 @@ const TextareaInput = ({
   description,
   resize = false,
   optionalLabel,
+  className,
 }: TextAreaProps) => {
   const form = useFormContext()
   const labelNoSpaces = label.replaceAll(' ', '-')
+  const enableResize = resize ? '' : 'resize-none'
   return (
     <FormField
       control={form.control}
@@ -93,7 +99,7 @@ const TextareaInput = ({
           <Textarea
             {...field}
             id={labelNoSpaces}
-            className={resize ? '' : 'resize-none'}
+            className={cn(enableResize, className)}
             placeholder={placeholder || label}
             disabled={disabled}
             value={field.value}
@@ -190,7 +196,10 @@ const CurrencyFormattedInput = ({
           labelNoSpaces={labelNoSpaces}
         >
           <CurrencyInput
-            className={cn('flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50', className)}
+            className={cn(
+              'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+              className
+            )}
             id={labelNoSpaces}
             value={field.value}
             onValueChange={field.onChange}
@@ -254,7 +263,7 @@ const DateInput = ({
           description={description}
           labelNoSpaces={labelNoSpaces}
         >
-<DatePicker field={field} placeholder={placeholder} disabled={disabled} />
+          <DatePicker field={field} placeholder={placeholder} disabled={disabled} />
         </FieldWrapper>
       )}
     />

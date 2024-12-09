@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
 
   return (
     // Table container
-    <div className='rounded-md border p-3 h-full'>
+    <div className='h-full py-2 bg-background rounded-lg p-3 '>
 
         <TableFilterControls table={table} categories={categories} />
 

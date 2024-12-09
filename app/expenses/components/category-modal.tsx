@@ -3,16 +3,12 @@
 import { toast } from 'sonner'
 import { useState } from 'react'
 import Modal from '@/components/Modal'
-import { AlertConfirmation } from './AlertConfirmation'
 import type { Category } from '@/utils/schemas/Category'
-import { useModal, ModalIds } from '@/utils/contexts/modal-context'
-import CategoryForm from '@/components/forms/category-form'
 import { IS_CATEGORY_FORM_DIRTY } from '@/utils/constants'
+import CategoryForm from '@/components/forms/category-form'
+import { useModal, ModalIds } from '@/utils/contexts/modal-context'
+import { AlertConfirmation } from '../../../components/AlertConfirmation'
 
-/* 
-    used as initial values when CREATING a new category.
-    when UPDATING, pass in the Category that will be updated as a prop.
-*/
 const defaultCategory = {
   name: '',
   color: '',
@@ -29,7 +25,6 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
 
   const handleOpenChange = () => {
     const isFormModified = localStorage.getItem(IS_CATEGORY_FORM_DIRTY)
-
     /* Checks if 'name' field has been modified before closing the modal. */
     if (isFormModified && JSON.parse(isFormModified)) setShowExitConfirmation(true)
     else closeModal(ModalIds.categoryModal)
@@ -38,11 +33,9 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
   /* click handler for the AlertConfirmation   */
   const handleConfirmAction = () => closeModal(ModalIds.categoryModal)
 
-  const onSuccess = (result: any) => {
+  const onSuccess = ({ message }: { message: string }) => {
     closeModal(ModalIds.categoryModal)
-    toast(result.message, {
-      description: `Category: ${result.response.name}`,
-    })
+    toast.success(message)
   }
 
   return (
@@ -54,7 +47,10 @@ const CategoryFormModal = ({ initialCategory = defaultCategory }: CategoryFormMo
           confirmationAction={handleConfirmAction}
           message='You have unsaved changes. Please confirm you want to exit without saving.'
         />
-        <CategoryForm category={initialCategory} onSuccess={onSuccess} />
+        <CategoryForm
+          category={modals.categoryModal?.props ? modals.categoryModal?.props : initialCategory}
+          onSuccess={onSuccess}
+        />
       </Modal.Content>
     </Modal>
   )

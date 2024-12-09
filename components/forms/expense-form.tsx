@@ -63,6 +63,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
     console.log(form.getValues())
     const result = await updateOrCreateExpense(form.getValues())
     if (result?.errors) {
+      console.log('ERROR: ', result)
       setMessage(result.message)
       setErrors(result.errors)
       return
@@ -104,6 +105,8 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
             label='Description'
             nameInSchema='description'
             disabled={form.formState.isLoading}
+            className='h-9 py-1.5'
+            resize
             optionalLabel
           />
 
@@ -133,7 +136,7 @@ export default function ExpenseForm({ expense, categories, onSuccess }: Props) {
           {/* AutopayEnabled (custom radio component) */}
           <RadioInput
             nameInSchema='autopayEnabled'
-            label='Is auto pay enabled for this expense?'
+            label='Is Auto pay enabled for this expense?'
           />
 
           {/* Due date & Frequency wrapper */}

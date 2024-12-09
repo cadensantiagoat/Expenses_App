@@ -22,7 +22,7 @@ const createNewUser = async () => {
     })
   }
 
-  redirect('/dashboard')
+  redirect('/expenses')
 }
 
 const NewUser = async () => {

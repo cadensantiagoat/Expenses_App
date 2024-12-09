@@ -38,9 +38,7 @@ export const CategoryFilter = ({ categories, table }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start'>
         {categories.map((category) => {
-          const isChecked = filters[index]
-            ? filters[index].value.includes(category.name)
-            : false
+          const isChecked = filters[index] ? filters[index].value.includes(category.name) : false
 
           return (
             <DropdownMenuCheckboxItem

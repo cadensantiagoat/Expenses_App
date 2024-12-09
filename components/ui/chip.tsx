@@ -11,7 +11,7 @@ export interface ChipProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const defaultChipStyles = {
   baseClass:
-    'inline-flex items-center gap-1.5 rounded-lg text-xs border px-2.5 py-1 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    'inline-flex flex-nowrap items-center gap-1.5 rounded-lg text-xs border px-2.5 py-1 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   defaultClass: 'bg-primary-foreground text-primary hover:bg-primary-foreground/80',
   iconColor: '#0f172a',
 }

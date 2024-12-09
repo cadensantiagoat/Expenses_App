@@ -6,7 +6,7 @@ import { H1, Muted } from '@/components/ui/typography';
 export default async function LandingPage() {
   const { userId } = await auth();
 
-  let href = userId ? '/dashboard' : '/new-user';
+  let href = userId ? '/expenses' : '/new-user';
 
   return (
     <div className="h-full grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

@@ -26,3 +26,20 @@ export const SkeletonText = () => {
     </div>
   );
 };
+
+export const SkeletonOverview = () => {
+  return (
+    <Card className="h-[202px] flex items-center justify-evenly w-full p-3">
+      <div className="flex items-center">
+        <Skeleton className="h-[150px] w-[150px] rounded-full" />
+      </div>
+      <div className='shrink-0 bg-border w-[1px] h-[75%]' />
+      <div className='flex flex-col justify-evenly h-full max-w-[240px] p-3 pl-4'>
+      <Skeleton className="h-4 w-[240px]" />
+      <Skeleton className="h-4 w-[148px]" />
+      <Skeleton className="h-4 w-[148px]" />
+      <Skeleton className="h-4 w-[91px]" />
+        </div>
+    </Card>
+  );
+};

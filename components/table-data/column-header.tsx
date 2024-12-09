@@ -8,18 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CaretSortIcon,
-  EyeNoneIcon,
-} from '@radix-ui/react-icons'
+import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons'
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
   title: string
-  align?: string 
+  align?: string
 }
 
 export function ColumnHeader<TData, TValue>({
@@ -33,8 +27,7 @@ export function ColumnHeader<TData, TValue>({
   }
 
   const classes = {
-    wrapper:
-      align === 'right' ? 'justify-end' : align === 'center' ? 'justify-center' : '',
+    wrapper: align === 'right' ? 'justify-end' : align === 'center' ? 'justify-center' : '',
     button: align === 'right' ? 'px-0 ' : align === 'center' ? 'justify-center' : '-ml-3',
   }
 

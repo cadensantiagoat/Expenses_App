@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
   IconSelectItem,
+  SelectSeparator,
 } from '@/components/ui/select'
 
 type InputProps = {
@@ -20,16 +21,13 @@ type InputProps = {
   defaultValue?: string
 }
 
-const IconInput = ({nameInSchema, fieldTitle, handleChange, defaultValue }: InputProps) => {
+const IconInput = ({ nameInSchema, fieldTitle, handleChange, defaultValue }: InputProps) => {
   return (
-    <div className='space-y-2'>
-    <FormLabel className='mb-2'>
-      {fieldTitle}
-      <span className='pl-2 font-normal text-primary/75'>(optional)</span>
-    </FormLabel>
-    <IconSelect name={nameInSchema} handleChange={handleChange} defaultValue={defaultValue} />
-  </div>
-
+    <div className='space-y-2 w-full'>
+      <FormLabel>{fieldTitle}</FormLabel>
+      <IconSelect name={nameInSchema} handleChange={handleChange} defaultValue={defaultValue} />
+      <span className='pl-1 text-xs font-normal text-primary/75'>Optional</span>
+    </div>
   )
 }
 
@@ -45,8 +43,8 @@ const IconSelect = ({ options = ICONS, name, handleChange, defaultValue }: Props
   const iconList = useMemo(() => createIconList(options), [options])
 
   return (
-    <Select onValueChange={handleChange} name={name} defaultValue={defaultValue}>
-      <SelectTrigger className='w-[81px]'>
+    <Select onValueChange={handleChange} name={name} defaultValue={defaultValue ? defaultValue : ''}>
+      <SelectTrigger className='min-w-[81px]'>
         <SelectValue placeholder='Select' />
       </SelectTrigger>
       <SelectContent>
@@ -68,4 +66,4 @@ const IconSelect = ({ options = ICONS, name, handleChange, defaultValue }: Props
   )
 }
 
-export {IconInput}
+export { IconInput }
