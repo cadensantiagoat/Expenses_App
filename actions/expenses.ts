@@ -1,7 +1,6 @@
 'use server'
-// import 'server-only';
+
 import { prisma } from '@/utils/db'
-import { delay } from '@/utils/delay'
 import { memoize } from 'nextjs-better-unstable-cache'
 import { revalidateTag } from 'next/cache'
 import { getCurrentUser } from '@/utils/auth'
@@ -81,9 +80,6 @@ export async function updateOrCreateExpense(expense: Expense): Promise<ReturnTyp
 // Gets and returns an ordered list of transactions by userId
 export const getAllExpenses = memoize(
   async (userId: string) => {
-    // simulates random load time (REMOVE)
-    // await delay()
-
     const data = await prisma.transaction.findMany({
       where: { userId: userId },
       include: { category: true },
@@ -123,9 +119,6 @@ export const getOneExpense = async (userId: string, expenseId: string) => {
 // Returns the total number of expenses and sum of all expense amounts
 export const getExpenseDataForDashboard = memoize(
   async (userId: string) => {
-    // simulates random load time (REMOVE)
-    // await delay()
-
     const userWithTransactions = await prisma.user.findFirst({
       where: { id: userId },
       include: { transactions: true },
@@ -157,8 +150,12 @@ export const getExpenseDataForDashboard = memoize(
 )
 
 export const deleteExpense = async (id: string) => {
-  await prisma.transaction.delete({ where: { id: id } })
-  console.log('transaction deleted: ID: ', id)
-  revalidatePath('/expenses')
-  revalidatePath('/expenses/categories')
+  try {
+    await prisma.transaction.delete({ where: { id: id } })
+    revalidatePath('/expenses')
+    revalidatePath('/expenses/categories')
+    return { message: 'Delete successful' }
+  } catch (error) {
+    return { message: 'Something went wrong.', error: error.message }
+  }
 }

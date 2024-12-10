@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useRouter } from 'next/navigation'
 import { ColumnDef } from '@tanstack/react-table'
 import type { Expense } from '@/utils/schemas/Expense'
 import { MoreHorizontal } from 'lucide-react'
@@ -29,7 +28,7 @@ export const columns: ColumnDef<Expense>[] = [
     header: ({ column }) => <ColumnHeader title='Title' column={column} />,
   },
   {
-    accessorKey: 'categoryName',
+    accessorKey: 'category.name',
     header: ({ column }) => <ColumnHeader title='Category' column={column} />,
     filterFn: 'arrIncludesSome',
     cell: ({ row }) => {
@@ -78,7 +77,7 @@ export const columns: ColumnDef<Expense>[] = [
     accessorKey: 'id',
     header: () => null,
     cell: ({ row }) => {
-      const expense = row.original // access expense data using row.original
+      const { id } = row.original // access expense data using row.original
 
       return (
         <div className='text-center'>
@@ -92,12 +91,11 @@ export const columns: ColumnDef<Expense>[] = [
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={(event) => {
                   event.stopPropagation()
-                  deleteExpense(expense.id)
+                   deleteExpense(id) 
                 }}
               >
                 Delete

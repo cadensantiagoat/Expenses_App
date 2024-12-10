@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useModal, ModalIds } from '@/utils/contexts/modal-context'
 
 import {
@@ -24,7 +23,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-
 import { TableFilterControls } from './table-header'
 
 interface DataTableProps<TData, TValue> {
@@ -38,12 +36,11 @@ export function DataTable<TData, TValue>({
   data,
   categories,
 }: DataTableProps<TData, TValue>) {
-  const router = useRouter()
   /* SORTING, FILTERING, and VISIBILITY state */
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState({})
-  const { modals, openModal, closeModal } = useModal()
+  const { openModal } = useModal()
 
   const table = useReactTable({
     data,
@@ -63,15 +60,10 @@ export function DataTable<TData, TValue>({
     },
   })
 
-  const handleRowClick = (expense) => {
-    openModal(ModalIds.expenseModal, expense)
-  }
-
   return (
-    // Table container
     <div className='h-full py-2 bg-background rounded-lg p-3 '>
-
-        <TableFilterControls table={table} categories={categories} />
+      {/* Search Bar and Column Filter button component */}
+      <TableFilterControls table={table} categories={categories} />
 
       <div className='table-container overflow-y-scroll'>
         <Table className=''>
@@ -96,7 +88,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowClick(row.original)}
+                  onClick={() => openModal(ModalIds.expenseModal, row.original)}
                   className='cursor-pointer'
                 >
                   {row.getVisibleCells().map((cell) => (

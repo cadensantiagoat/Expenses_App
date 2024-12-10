@@ -21,7 +21,6 @@ export const StatusChip = ({ status, className }: Props) => {
       className={cn('rounded-2xl inline-flex items-center gap-1.5 pl-2.5 pr-3 py-0.5', className)}
     >
       <Icon name={status ? 'CircleCheckBig' : 'CircleAlert'} size={15} color={color} />
-      {/* {status ? 'Paid' : 'Unpaid'} */}
     </div>
   )
 }

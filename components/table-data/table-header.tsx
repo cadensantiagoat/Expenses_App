@@ -1,7 +1,6 @@
 'use client'
 
 import { Input } from '../ui/input'
-import { CategoryFilter } from './category-filter'
 import { DataTableVisibilityToggle } from './column-visibility-toggle'
 import type { Category } from '@/utils/schemas/Category'
 
@@ -22,7 +21,6 @@ export const TableFilterControls = ({ table, categories }: Props) => {
         />
       </div>
       <div className='flex gap-2'>
-        <CategoryFilter categories={categories} table={table} />
         <DataTableVisibilityToggle table={table} />
       </div>
     </div>

@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { H1, Muted } from '@/components/ui/typography';
 
 export default async function LandingPage() {
