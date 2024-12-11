@@ -1,6 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker
+Expense Tracker provides users with a simple and intuitive interface to track and manage their personal expenses. Users can add expenses with details such as amount, category, and due date, and view a list of their expenses. The app addresses the common problem of financial disorganization by offering a user-friendly solution for staying on top of daily expenses.
+
+- **Frontend**: Next.js (React framework)
+- **Database**: Supabase database (Postgres)
+  - **ORM**: Prisma
+- **Authentication**: Clerk.js
+
 
 ## Getting Started
+
+_This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)._
 
 Install the required dependencies:
 
